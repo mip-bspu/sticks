@@ -38,6 +38,7 @@ table {
 
 thead tr {
   background-color: rgb(216, 216, 216);
+  border-radius: .5rem;
 }
 
 tr {
@@ -101,7 +102,12 @@ button:hover {
   gap: 1rem;
 }
 
-.card>h4,
+h3 {
+  display: flex;
+  margin: 0%;
+  margin-top: 2rem;
+}
+
 .setName {
   display: flex;
   justify-content: space-between;

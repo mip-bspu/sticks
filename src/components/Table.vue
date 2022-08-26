@@ -1,12 +1,8 @@
 <template>
   <div class="card">
-    <h4>
-      <span></span>
-      <button>+ деталь</button>
-    </h4>
+    <h3>TEST</h3>
 
-    <hr />
-    <div class="scrollable">
+    <div class="scrollable card-in">
       <table>
         <thead>
           <tr>

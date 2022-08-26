@@ -1,10 +1,8 @@
 <template>
   <div class="card">
-    <div class="card-in">
-      <h4>
-        <span>ИЗДЕЛИЯ</span>
-      </h4>
-    </div>
+    <h3>
+      <span>ИЗДЕЛИЯ</span>
+    </h3>
 
     <div class="card-in">
       <ul>
