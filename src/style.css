@@ -14,16 +14,16 @@
   gap: 1rem;
 }
 
-body {
-  margin: 0;
-}
-
 #app>.card {
   flex: 1;
 }
 
 #app>.card:nth-child(1) {
   flex: 0 1 20%;
+}
+
+body {
+  margin: 0;
 }
 
 hr {
@@ -37,8 +37,9 @@ table {
 }
 
 thead tr {
-  background-color: rgb(216, 216, 216);
-  border-radius: .5rem;
+  background-color: rgb(185, 185, 185);
+  border-radius: .25rem;
+  margin-bottom: 1rem;
 }
 
 tr {
@@ -56,6 +57,10 @@ td {
   justify-content: center;
 }
 
+td {
+  color: #0077e6;
+}
+
 button {
   all: unset;
   cursor: pointer;
@@ -70,6 +75,44 @@ input {
   justify-content: space-between;
   align-items: center;
   font-size: medium;
+  background-color: rgb(216, 216, 216);
+  border-radius: .5rem;
+  border: 0px;
+  height: 1rem;
+  padding: .5rem;
+}
+
+h3 {
+  display: flex;
+  margin: 0%;
+  margin-top: 2rem;
+}
+
+li {
+  padding: 1rem;
+}
+
+ul {
+  padding: 0%;
+  margin: 0%;
+  list-style-type: none;
+}
+
+li:hover {
+  padding: 1rem;
+  /* border: 2px solid #0077e6; */
+  border-bottom: 2px solid #0077e6;
+  cursor: pointer;
+  /* border-radius: .25rem; */
+}
+
+tbody tr:hover {
+  background-color: rgb(242, 244, 255);
+  border-radius: .25rem;
+}
+
+.newRow:hover {
+  background-color: unset;
 }
 
 button:active {
@@ -78,6 +121,14 @@ button:active {
 
 button:hover {
   background-color: rgb(155, 155, 155);
+}
+
+button:disabled,
+button:active:disabled {
+  background-color: rgb(233, 233, 233);
+  color: rgb(73, 73, 73);
+  transform: scale(1);
+  cursor: alias;
 }
 
 .card {
@@ -102,12 +153,6 @@ button:hover {
   gap: 1rem;
 }
 
-h3 {
-  display: flex;
-  margin: 0%;
-  margin-top: 2rem;
-}
-
 .setName {
   display: flex;
   justify-content: space-between;
@@ -117,17 +162,14 @@ h3 {
 .setName>input {
   flex: 0 1 80%;
   height: 1.5rem;
-  background-color: rgb(216, 216, 216);
-  border-radius: .5rem;
-  border: 0px;
   padding: .5rem;
 }
 
-.setName>input:focus {
+input:focus {
   outline: 0px;
 }
 
-.setName>input:hover {
+input:hover {
   background-color: rgb(204, 204, 204);
 }
 
