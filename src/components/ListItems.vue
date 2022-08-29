@@ -9,6 +9,7 @@
         <li
           v-for="item in arrayItems"
           :key="item.name"
+          :class="{ selected: item === chosenItem }"
           @click="selectItem(item)"
         >
           {{ item.name }}
@@ -17,8 +18,14 @@
     </div>
 
     <div class="setName">
-      <input type="text" v-model="eName" placeholder="Введите название" />
-      <button :disabled="!eName" @click="addItem(eName)">+</button>
+      <input
+        type="text"
+        v-model="item.name"
+        @keydown.enter="addItem"
+        placeholder="Введите название"
+        autofocus
+      />
+      <button :disabled="!item.name" @click="addItem">+</button>
     </div>
   </div>
 </template>
@@ -27,23 +34,16 @@
 import { getItem } from "./Item";
 
 let { arrayItems, chosenItem } = $(getItem());
-let eName = $ref(null);
 
-function addItem(eName) {
-  let item = {
-    name: eName,
-    saw: 0,
-    components: {
-      name: "",
-      length: 0,
-      height: 0,
-      width: 0,
-      count: 0,
-      inc: false,
-    },
-  };
-  arrayItems.push(item);
-  eName = null;
+let item = $ref({
+  name: "",
+  saw: 0,
+  components: {},
+});
+
+function addItem() {
+  arrayItems.push(JSON.parse(JSON.stringify(item)));
+  item.name = "";
 }
 
 function selectItem(item) {
