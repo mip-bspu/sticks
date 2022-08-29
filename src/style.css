@@ -33,7 +33,7 @@ hr {
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-spacing: 0ch;
 }
 
 thead tr {
@@ -42,19 +42,10 @@ thead tr {
   margin-bottom: 1rem;
 }
 
-tr {
-  display: flex;
-  justify-content: center;
-}
-
 th,
 td {
-  /* border: 1px solid grey; */
   padding: .5rem;
   flex: 0 1 20%;
-
-  display: flex;
-  justify-content: center;
 }
 
 td {
@@ -72,7 +63,6 @@ button {
 
 input {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-size: medium;
   background-color: rgb(216, 216, 216);
@@ -100,6 +90,13 @@ ul {
 
 li:hover {
   padding: 1rem;
+  background-color: rgb(242, 244, 255);
+  cursor: pointer;
+  border-radius: .2rem;
+}
+
+li.selected {
+  padding: 1rem;
   /* border: 2px solid #0077e6; */
   border-bottom: 2px solid #0077e6;
   cursor: pointer;
@@ -109,10 +106,6 @@ li:hover {
 tbody tr:hover {
   background-color: rgb(242, 244, 255);
   border-radius: .25rem;
-}
-
-.newRow:hover {
-  background-color: unset;
 }
 
 button:active {
@@ -131,11 +124,23 @@ button:active:disabled {
   cursor: alias;
 }
 
+input:focus {
+  outline: 0px;
+}
+
+input:hover {
+  background-color: rgb(184, 184, 184);
+}
+
+.inputFill {
+  background-color: unset;
+}
+
 .card {
   background-color: rgba(255, 255, 255, 0);
   border-radius: .5rem;
   padding: 1rem;
-  overflow: hidden;
+  /* overflow: hidden; */
 
   display: flex;
   flex-direction: column;
@@ -165,18 +170,10 @@ button:active:disabled {
   padding: .5rem;
 }
 
-input:focus {
-  outline: 0px;
-}
-
-input:hover {
-  background-color: rgb(204, 204, 204);
-}
-
 .scrollable {
   overflow-y: scroll;
   /* border: 1px solid lightgrey; */
-  border-radius: .25rem;
+  border-radius: .5rem;
   flex: 1;
   padding: 1rem;
 }
@@ -194,4 +191,34 @@ input:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.newRow:hover {
+  background-color: unset;
+}
+
+.newRow {
+  margin-top: .5rem;
+}
+
+.number {
+  text-align: right;
+  font-family: monospace;
+  font-size: larger;
+}
+
+.checkbox {
+  transform: scale(1.5)
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+label>span {
+  font-size: .8rem;
+  letter-spacing: 0.1rem;
+  color: rgb(153, 153, 153);
 }
