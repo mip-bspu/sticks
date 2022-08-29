@@ -1,45 +1,126 @@
 <template>
   <div class="card">
-    <h3>{{ chosenItem.name }}</h3>
+    <h3>{{ chosenItem?.name }}</h3>
 
-    <div class="scrollable card-in">
+    <div class="card-in">
       <table>
         <thead>
           <tr>
-            <th>Название</th>
-            <th>Высота</th>
-            <th>Длина</th>
-            <th>Ширина</th>
-            <th>Кол-во</th>
-            <th>Возможность увеличить</th>
+            <th style="text-align: left">Название</th>
+            <th style="text-align: right">Высота</th>
+            <th style="text-align: right">Длина</th>
+            <th style="text-align: right">Ширина</th>
+            <th style="text-align: right">Кол-во</th>
+            <th>Увеличить</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in components" :key="item.name">
-            <td>{{ item.name }}</td>
-            <td>{{ item.height }}</td>
-            <td>{{ item.length }}</td>
-            <td>{{ item.width }}</td>
-            <td>{{ item.count }}</td>
+            <td style="text-align: left">
+              <input
+                class="inputFill"
+                type="text"
+                name="name"
+                v-model="item.name"
+              />
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="height"
+                v-model="item.height"
+              />
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="length"
+                v-model="item.length"
+              />
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="width"
+                v-model="item.width"
+              />
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="count"
+                v-model="item.count"
+              />
+            </td>
             <td>
               <input
                 type="checkbox"
                 name="check"
                 :checked="item.inc"
-                disabled
+                class="checkbox inputFill"
               />
             </td>
-            <td><button @click="deleteComponent(item)">x</button></td>
+            <td>
+              <button @click="deleteComponent(item)" style="color: red">
+                x
+              </button>
+            </td>
           </tr>
 
           <tr class="newRow">
-            <td><input type="text" name="name" v-model="eName" /></td>
-            <td><input type="number" name="height" v-model="eHeight" /></td>
-            <td><input type="number" name="length" v-model="eLength" /></td>
-            <td><input type="number" name="width" v-model="eWidgth" /></td>
-            <td><input type="number" name="count" v-model="eCount" /></td>
-            <td><input type="checkbox" name="check" v-model="eInc" /></td>
+            <td>
+              <input
+                placeholder="Введите название"
+                type="text"
+                name="name"
+                v-model="eName"
+              />
+            </td>
+            <td>
+              <input
+                class="number"
+                type="number"
+                name="height"
+                v-model="eHeight"
+              />
+            </td>
+            <td>
+              <input
+                class="number"
+                type="number"
+                name="length"
+                v-model="eLength"
+              />
+            </td>
+            <td>
+              <input
+                class="number"
+                type="number"
+                name="width"
+                v-model="eWidgth"
+              />
+            </td>
+            <td>
+              <input
+                class="number"
+                type="number"
+                name="count"
+                v-model="eCount"
+              />
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                name="check"
+                v-model="eInc"
+                class="checkbox"
+              />
+            </td>
             <td>
               <button
                 @click="
@@ -62,10 +143,10 @@ import { computed, watch } from "vue";
 
 let { chosenItem, arrayItems } = $(getItem());
 let eName = $ref(null);
-let eHeight = $ref(null);
-let eLength = $ref(null);
-let eWidgth = $ref(null);
-let eCount = $ref(null);
+let eHeight = $ref(0);
+let eLength = $ref(0);
+let eWidgth = $ref(0);
+let eCount = $ref(0);
 let eInc = $ref(null);
 
 let components = $ref([]);
