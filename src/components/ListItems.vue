@@ -36,7 +36,7 @@ function addItem(eName) {
     components: {
       name: "",
       length: 0,
-      heigth: 0,
+      height: 0,
       width: 0,
       count: 0,
       inc: false,

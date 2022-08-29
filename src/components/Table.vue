@@ -12,6 +12,7 @@
             <th>Ширина</th>
             <th>Кол-во</th>
             <th>Возможность увеличить</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
                 disabled
               />
             </td>
+            <td><button @click="deleteComponent(item)">x</button></td>
           </tr>
 
           <tr class="newRow">
@@ -38,6 +40,15 @@
             <td><input type="number" name="width" v-model="eWidgth" /></td>
             <td><input type="number" name="count" v-model="eCount" /></td>
             <td><input type="checkbox" name="check" v-model="eInc" /></td>
+            <td>
+              <button
+                @click="
+                  addComponent(eName, eHeight, eLength, eWidgth, eCount, eInc)
+                "
+              >
+                +
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -66,7 +77,22 @@ watch(
   }
 );
 
-function addNewComponent() {}
+function addComponent(name, height, length, width, count, inc) {
+  let newComponent = {
+    name: name,
+    length: length,
+    height: height,
+    width: width,
+    count: count,
+    inc: inc,
+  };
+  chosenItem.components.push(newComponent);
+}
+
+function deleteComponent(item) {
+  const id = chosenItem.components.indexOf(item);
+  chosenItem.components.splice(id, 1);
+}
 </script>
 
 <style scoped>
