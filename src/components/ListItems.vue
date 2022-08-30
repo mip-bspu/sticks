@@ -31,9 +31,14 @@
 </template>
 
 <script setup>
-import { getItem } from "./Item";
+import { onMounted } from "@vue/runtime-core";
+import { useItems } from "../composables/useItems";
 
-let { arrayItems, chosenItem } = $(getItem());
+let { chosenItem, arrayItems, sPaint } = $(useItems());
+
+onMounted(() => {
+  chosenItem = arrayItems[0];
+});
 
 let item = $ref({
   name: "",

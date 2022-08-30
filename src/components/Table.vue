@@ -3,6 +3,11 @@
     <h3>{{ chosenItem?.name }}</h3>
 
     <div class="card-in">
+      <div>
+        <h4>Ширина спила</h4>
+        <input type="number" class="number" />
+      </div>
+      <h4>Детали</h4>
       <table>
         <thead>
           <tr>
@@ -102,7 +107,7 @@
                 class="number"
                 type="number"
                 name="width"
-                v-model="eWidgth"
+                v-model="eWidth"
               />
             </td>
             <td>
@@ -134,18 +139,23 @@
         </tbody>
       </table>
     </div>
+    <div class="card-in">
+      <h4>Площадь окраски: {{ sPaint }} м^2</h4>
+      <h4>Количество хлыстов</h4>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { getItem } from "./Item";
-import { computed, watch } from "vue";
+import { useItems } from "../composables/useItems";
+import { watch } from "vue";
 
-let { chosenItem, arrayItems } = $(getItem());
+let { chosenItem, arrayItems, sPaint } = $(useItems());
+
 let eName = $ref(null);
 let eHeight = $ref(0);
 let eLength = $ref(0);
-let eWidgth = $ref(0);
+let eWidth = $ref(0);
 let eCount = $ref(0);
 let eInc = $ref(null);
 
