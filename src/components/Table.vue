@@ -1,21 +1,22 @@
 <template>
   <div class="card">
-    <h3>{{ chosenItem?.name }}</h3>
+    <h3 style="color: #0077e6">{{ chosenItem?.name }}</h3>
 
-    <div class="card-in">
+    <div class="card-in scrollable">
       <div>
         <h4>Ширина спила</h4>
-        <input type="number" class="number" />
+        <input type="number" class="number" v-model="chosenItem.saw" />
       </div>
       <h4>Детали</h4>
       <table>
         <thead>
           <tr>
             <th style="text-align: left">Название</th>
-            <th style="text-align: right">Высота</th>
-            <th style="text-align: right">Длина</th>
-            <th style="text-align: right">Ширина</th>
-            <th style="text-align: right">Кол-во</th>
+            <th style="text-align: right">Высота хлыста, мм</th>
+            <th style="text-align: right">Длина хлыста, мм</th>
+            <th style="text-align: right">Ширина хлыста, мм</th>
+            <th style="text-align: right">Высота детали, мм</th>
+            <th style="text-align: right">Кол-во деталей</th>
             <th>Увеличить</th>
             <th></th>
           </tr>
@@ -52,6 +53,14 @@
                 type="number"
                 name="width"
                 v-model="item.width"
+              />
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="height"
+                v-model="item.heightSelf"
               />
             </td>
             <td>
@@ -114,6 +123,14 @@
               <input
                 class="number"
                 type="number"
+                name="height"
+                v-model="eHeightSelf"
+              />
+            </td>
+            <td>
+              <input
+                class="number"
+                type="number"
                 name="count"
                 v-model="eCount"
               />
@@ -129,7 +146,7 @@
             <td>
               <button
                 @click="
-                  addComponent(eName, eHeight, eLength, eWidgth, eCount, eInc)
+                  addComponent(eName, eHeight, eLength, eWidth, eCount, eInc)
                 "
               >
                 +
@@ -140,8 +157,8 @@
       </table>
     </div>
     <div class="card-in">
-      <h4>Площадь окраски: {{ sPaint }} м^2</h4>
-      <h4>Количество хлыстов</h4>
+      <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
+      <h4 style="color: #0077e6">Количество хлыстов</h4>
     </div>
   </div>
 </template>
@@ -157,6 +174,7 @@ let eHeight = $ref(0);
 let eLength = $ref(0);
 let eWidth = $ref(0);
 let eCount = $ref(0);
+let eHeightSelf = $ref(0);
 let eInc = $ref(null);
 
 let components = $ref([]);
