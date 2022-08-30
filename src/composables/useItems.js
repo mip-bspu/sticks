@@ -50,20 +50,56 @@ function area(item) {
 
 function countSticks(item) {
     let comp = item.components
-    for (const i in comp) {
-        if (Object.hasOwnProperty.call(object, key)) {
-            const element = object[key];
+    let groups = [{
+        name: comp[0].length + "x" + comp[0].width,
+        params: [{
+            height: comp[0].height,
+            heightSelf: comp[0].heightSelf,
+            count: comp[0].count
+        }]
+    }]
+    let elem = null
+    let index = null
 
+    for (var k in comp) {
+        elem = groups.find((i) => {
+            if (i.name === (comp[k].length + "x" + comp[k].width)) {
+                return i
+            } else {
+                return null
+            }
+        })
+        if (elem) {
+            index = groups.indexOf(elem)
+            groups[index].params.push({
+                height: comp[k].height,
+                heightSelf: comp[k].heightSelf,
+                count: comp[k].count
+            })
+            elem = -1
+        } else {
+            groups.push({
+                name: comp[k].length + "x" + comp[k].width,
+                params: [{
+                    height: comp[k].height,
+                    heightSelf: comp[k].heightSelf,
+                    count: comp[k].count
+                }]
+            })
         }
     }
+    console.log(groups);
+
 }
 
 let sPaint = computed(() => area(chosenItem))
+let cSticks = computed(() => countSticks(chosenItem))
 
 export function useItems() {
     return $$({
         sPaint,
         arrayItems,
-        chosenItem
+        chosenItem,
+        cSticks
     })
 }

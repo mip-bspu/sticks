@@ -158,7 +158,7 @@
     </div>
     <div class="card-in">
       <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
-      <h4 style="color: #0077e6">Количество хлыстов</h4>
+      <h4 style="color: #0077e6">Количество хлыстов: {{ cSticks }}</h4>
     </div>
   </div>
 </template>
@@ -167,7 +167,7 @@
 import { useItems } from "../composables/useItems";
 import { watch } from "vue";
 
-let { chosenItem, arrayItems, sPaint } = $(useItems());
+let { chosenItem, arrayItems, sPaint, cSticks } = $(useItems());
 
 let eName = $ref(null);
 let eHeight = $ref(0);
