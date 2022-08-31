@@ -4,8 +4,8 @@
 
     <div class="card-in scrollable">
       <div>
-        <h4>Ширина спила</h4>
-        <input type="number" class="number" v-model="saw" />
+        <h4>Ширина спила, мм</h4>
+        <input type="number" class="number" v-model="chosenItem.saw" />
       </div>
       <h4>Детали</h4>
       <table>
@@ -17,12 +17,12 @@
             <th style="text-align: right">Ширина хлыста, мм</th>
             <th style="text-align: right">Высота детали, мм</th>
             <th style="text-align: right">Кол-во деталей</th>
-            <th>Увеличить</th>
+            <th>Остаток, мм</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in components" :key="item.name">
+          <tr v-for="item in chosenItem.components" :key="item.name">
             <td style="text-align: left">
               <input
                 class="inputFill"
@@ -59,8 +59,9 @@
               <input
                 class="number inputFill"
                 type="number"
-                name="height"
+                name="heightS"
                 v-model="item.heightSelf"
+                :max="item.height"
               />
             </td>
             <td>
@@ -71,14 +72,10 @@
                 v-model="item.count"
               />
             </td>
-            <td>
-              <input
-                type="checkbox"
-                name="check"
-                :checked="item.inc"
-                class="checkbox inputFill"
-              />
+            <td v-if="item.height !== item.heightSelf" class="number">
+              {{ findTail(item, cSticks).tail }}
             </td>
+            <td v-else class="number">0</td>
             <td>
               <button @click="deleteComponent(item)" style="color: red">
                 x
@@ -124,6 +121,7 @@
                 class="number"
                 type="number"
                 name="height"
+                :max="eHeight"
                 v-model="eHeightSelf"
               />
             </td>
@@ -135,14 +133,7 @@
                 v-model="eCount"
               />
             </td>
-            <td>
-              <input
-                type="checkbox"
-                name="check"
-                v-model="eInc"
-                class="checkbox"
-              />
-            </td>
+            <td></td>
             <td>
               <button
                 @click="
@@ -164,10 +155,10 @@
         </tbody>
       </table>
     </div>
-    <div class="card-in">
+    <div class="card-in scrollable">
       <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
       <h4 style="color: #0077e6" v-for="s in cSticks" :key="s.stick">
-        Хлыст: {{ s.stick }} Кол-во: {{ s.count }}
+        Хлыст: {{ s.stick }} Кол-во хлыстов: {{ s.count }}
       </h4>
     </div>
   </div>
@@ -175,9 +166,8 @@
 
 <script setup>
 import { useItems } from "../composables/useItems";
-import { watch } from "vue";
 
-let { chosenItem, arrayItems, sPaint, cSticks } = $(useItems());
+let { chosenItem, arrayItems, sPaint, cSticks, findTail } = $(useItems());
 
 let eName = $ref(null);
 let eHeight = $ref(null);
@@ -185,18 +175,6 @@ let eLength = $ref(null);
 let eWidth = $ref(null);
 let eCount = $ref(null);
 let eHeightSelf = $ref(null);
-let eInc = $ref(null);
-
-let components = $ref([]);
-let saw = $ref(null);
-
-watch(
-  () => chosenItem,
-  (chosenItem) => {
-    components = chosenItem.components;
-    saw = chosenItem.saw;
-  }
-);
 
 function addComponent(name, height, length, width, heightSelf, count, inc) {
   let newComponent = {
@@ -206,10 +184,10 @@ function addComponent(name, height, length, width, heightSelf, count, inc) {
     heightSelf: heightSelf,
     width: width,
     count: count,
-    inc: inc,
   };
+  debugger;
   chosenItem.components.push(newComponent);
-  eName = eHeight = eLength = eWidth = eCount = eInc = eHeightSelf = null;
+  eName = eHeight = eLength = eWidth = eCount = eHeightSelf = null;
 }
 
 function deleteComponent(item) {

@@ -43,7 +43,7 @@ onMounted(() => {
 let item = $ref({
   name: "",
   saw: 0,
-  components: {},
+  components: [],
 });
 
 function addItem() {
