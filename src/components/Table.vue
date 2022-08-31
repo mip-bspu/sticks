@@ -17,7 +17,6 @@
             <th style="text-align: right">Ширина хлыста, мм</th>
             <th style="text-align: right">Высота детали, мм</th>
             <th style="text-align: right">Кол-во деталей</th>
-            <th>Остаток, мм</th>
             <th></th>
           </tr>
         </thead>
@@ -72,10 +71,6 @@
                 v-model="item.count"
               />
             </td>
-            <td v-if="item.height !== item.heightSelf" class="number">
-              {{ findTail(item, cSticks).tail }}
-            </td>
-            <td v-else class="number">0</td>
             <td>
               <button @click="deleteComponent(item)" style="color: red">
                 x
@@ -133,7 +128,6 @@
                 v-model="eCount"
               />
             </td>
-            <td></td>
             <td>
               <button
                 @click="
@@ -143,8 +137,7 @@
                     eLength,
                     eWidth,
                     eHeightSelf,
-                    eCount,
-                    eInc
+                    eCount
                   )
                 "
               >
@@ -157,8 +150,10 @@
     </div>
     <div class="card-in scrollable">
       <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
-      <h4 style="color: #0077e6" v-for="s in cSticks" :key="s.stick">
-        Хлыст: {{ s.stick }} Кол-во хлыстов: {{ s.count }}
+      <h4 style="color: #0077e6">Хлысты с учетом спила:</h4>
+      <h4 style="color: #0077e6" v-for="s in countSticks" :key="s.name">
+        Хлыст {{ s.name }}
+        <p v-for="(stick, index) in s.stick" :key="index">  {{ index+1 }}. Детали, мм: {{ stick.details }} <br> Остаток, мм: {{stick.tail}}</p>
       </h4>
     </div>
   </div>
@@ -167,7 +162,7 @@
 <script setup>
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, cSticks, findTail } = $(useItems());
+let { chosenItem, arrayItems, sPaint, countSticks, findTail } = $(useItems());
 
 let eName = $ref(null);
 let eHeight = $ref(null);
@@ -176,7 +171,7 @@ let eWidth = $ref(null);
 let eCount = $ref(null);
 let eHeightSelf = $ref(null);
 
-function addComponent(name, height, length, width, heightSelf, count, inc) {
+function addComponent(name, height, length, width, heightSelf, count) {
   let newComponent = {
     name: name,
     length: length,
@@ -185,7 +180,6 @@ function addComponent(name, height, length, width, heightSelf, count, inc) {
     width: width,
     count: count,
   };
-  debugger;
   chosenItem.components.push(newComponent);
   eName = eHeight = eLength = eWidth = eCount = eHeightSelf = null;
 }
