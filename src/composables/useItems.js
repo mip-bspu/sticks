@@ -3,7 +3,7 @@ import { computed } from "vue"
 let arrayItems = $ref([
     {
         name: "Навес",
-        saw: 0,
+        saw: 3,
         components: [{
             name: "Деталь 1",
             height: 6000,
@@ -50,20 +50,20 @@ function area(item) {
 
 function countSticks(item) {
     let comp = item.components
-    let groups = [{
-        name: comp[0].length + "x" + comp[0].width,
-        params: [{
-            height: comp[0].height,
-            heightSelf: comp[0].heightSelf,
-            count: comp[0].count
-        }]
-    }]
+    let groups = []
     let elem = null
     let index = null
 
+    let sumHeight = 0
+    let sumCount = 0
+    let tail = 0
+    let count = 0
+
+    let arrSticks = []
+
     for (var k in comp) {
         elem = groups.find((i) => {
-            if (i.name === (comp[k].length + "x" + comp[k].width)) {
+            if (i.name === (comp[k].length + "x" + comp[k].width + "x" + comp[k].height)) {
                 return i
             } else {
                 return null
@@ -73,16 +73,16 @@ function countSticks(item) {
             index = groups.indexOf(elem)
             groups[index].params.push({
                 height: comp[k].height,
-                heightSelf: comp[k].heightSelf,
+                heightSelf: comp[k].heightSelf + item.saw,
                 count: comp[k].count
             })
-            elem = -1
+            elem = null
         } else {
             groups.push({
-                name: comp[k].length + "x" + comp[k].width,
+                name: comp[k].length + "x" + comp[k].width + "x" + comp[k].height,
                 params: [{
                     height: comp[k].height,
-                    heightSelf: comp[k].heightSelf,
+                    heightSelf: comp[k].heightSelf + item.saw,
                     count: comp[k].count
                 }]
             })
@@ -90,6 +90,25 @@ function countSticks(item) {
     }
     console.log(groups);
 
+    for (var i in groups) {
+        for (var j in groups[i].params) {
+            sumHeight += groups[i].params[j].heightSelf * groups[i].params[j].count
+        }
+        console.log(sumHeight);
+
+        if (sumHeight % groups[i].params[j].height > 0) {
+            count += Math.trunc(sumHeight / groups[i].params[j].height) + 1
+            tail += sumHeight % groups[i].params[j].height
+        } else {
+            count += (sumHeight / groups[i].params[j].height)
+        }
+
+        arrSticks.push({ stick: comp[k].length + "x" + comp[k].width + "x" + comp[k].height, count: count })
+        sumHeight = 0
+        count = 0
+    }
+    console.log(arrSticks);
+    return arrSticks
 }
 
 let sPaint = computed(() => area(chosenItem))

@@ -5,7 +5,7 @@
     <div class="card-in scrollable">
       <div>
         <h4>Ширина спила</h4>
-        <input type="number" class="number" v-model="chosenItem.saw" />
+        <input type="number" class="number" v-model="saw" />
       </div>
       <h4>Детали</h4>
       <table>
@@ -146,7 +146,15 @@
             <td>
               <button
                 @click="
-                  addComponent(eName, eHeight, eLength, eWidth, eCount, eInc)
+                  addComponent(
+                    eName,
+                    eHeight,
+                    eLength,
+                    eWidth,
+                    eHeightSelf,
+                    eCount,
+                    eInc
+                  )
                 "
               >
                 +
@@ -158,7 +166,9 @@
     </div>
     <div class="card-in">
       <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
-      <h4 style="color: #0077e6">Количество хлыстов: {{ cSticks }}</h4>
+      <h4 style="color: #0077e6" v-for="s in cSticks" :key="s.stick">
+        Хлыст: {{ s.stick }} Кол-во: {{ s.count }}
+      </h4>
     </div>
   </div>
 </template>
@@ -170,32 +180,36 @@ import { watch } from "vue";
 let { chosenItem, arrayItems, sPaint, cSticks } = $(useItems());
 
 let eName = $ref(null);
-let eHeight = $ref(0);
-let eLength = $ref(0);
-let eWidth = $ref(0);
-let eCount = $ref(0);
-let eHeightSelf = $ref(0);
+let eHeight = $ref(null);
+let eLength = $ref(null);
+let eWidth = $ref(null);
+let eCount = $ref(null);
+let eHeightSelf = $ref(null);
 let eInc = $ref(null);
 
 let components = $ref([]);
+let saw = $ref(null);
 
 watch(
   () => chosenItem,
   (chosenItem) => {
     components = chosenItem.components;
+    saw = chosenItem.saw;
   }
 );
 
-function addComponent(name, height, length, width, count, inc) {
+function addComponent(name, height, length, width, heightSelf, count, inc) {
   let newComponent = {
     name: name,
     length: length,
     height: height,
+    heightSelf: heightSelf,
     width: width,
     count: count,
     inc: inc,
   };
   chosenItem.components.push(newComponent);
+  eName = eHeight = eLength = eWidth = eCount = eInc = eHeightSelf = null;
 }
 
 function deleteComponent(item) {
