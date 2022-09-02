@@ -208,10 +208,6 @@ input:hover {
   font-size: larger;
 }
 
-.checkbox {
-  transform: scale(1.5)
-}
-
 label {
   display: flex;
   flex-direction: column;

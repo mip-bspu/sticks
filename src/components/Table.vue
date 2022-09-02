@@ -160,24 +160,26 @@
 
       <hr />
 
-      <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
-      <h4 style="color: #0077e6">Хлысты с учетом спила деталей:</h4>
+      <h3 style="color: #0077e6">
+        Общая площадь окраски: {{ sPaint }} м <sub>2</sub>
+      </h3>
 
       <div v-for="s in countSticks" :key="s.name">
-        <h4 style="color: #0077e6">Хлыст {{ s.name }}</h4>
+        <h3 style="color: #0077e6">Хлыст {{ s.name }}</h3>
+        <br />
 
-        <table>
+        <table class="resultTable">
           <thead>
             <tr>
-              <th>Название детали</th>
-              <th>Длина детали</th>
-              <th>Кол-во</th>
+              <th style="text-align: left">Название детали</th>
+              <th style="text-align: right">Длина детали с учётом спила, мм</th>
+              <th style="text-align: right">Кол-во деталей</th>
             </tr>
           </thead>
 
           <tbody v-for="(stick, i) in s.stick" :key="i">
             <tr>
-              <th :colspan="4">{{ i + 1 }}</th>
+              <th colspan="4" class="nStick">{{ i + 1 }} хлыст</th>
             </tr>
             <tr v-for="(detail, j) in stick.details" :key="j">
               <td>{{ detail.name }}</td>
@@ -185,9 +187,9 @@
               <td class="number">{{ detail.countInStick }}</td>
             </tr>
             <tr>
-              <td>
-                <h4>Остаток: {{ stick.tail }}</h4>
-              </td>
+              <th :colspan="4" style="text-align: left">
+                <b>Остаток: {{ stick.tail }} мм</b>
+              </th>
             </tr>
           </tbody>
         </table>
@@ -197,11 +199,12 @@
 </template>
 
 <script setup>
+import { computed, watch } from "vue";
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, countSticks } = $(useItems());
+let { chosenItem, arrayItems, sPaint, countSticks, clump } = $(useItems());
 
-let eName = $ref(null);
+let eName = $ref("");
 let eHeight = $ref(null);
 let eLength = $ref(null);
 let eWidth = $ref(null);
@@ -228,4 +231,12 @@ function deleteComponent(item) {
 </script>
 
 <style scoped>
+.nStick {
+  background-color: rgb(239, 239, 239);
+}
+
+.resultTable {
+  border: 1px solid rgb(185, 185, 185);
+  border-spacing: 0px;
+}
 </style>

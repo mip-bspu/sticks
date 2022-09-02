@@ -3,39 +3,40 @@ import { computed } from "vue"
 let arrayItems = $ref([
     {
         name: "Навес",
-        saw: 3,
+        saw: 1,
         components: [{
-            name: "Деталь 1",
+            name: "Вертикальные стойки",
+            height: 8000,
+            length: 30,
+            width: 30,
+            heightSelf: 2000,
+            count: 8,
+        },
+        {
+            name: "Горизонтальные стойки (4,5м)",
             height: 6000,
             length: 30,
             width: 30,
-            heightSelf: 1000,
-            count: 4,
+            heightSelf: 4500,
+            count: 2,
         },
         {
-            name: "Деталь 2",
-            height: 6000,
-            length: 30,
-            width: 60,
-            heightSelf: 1000,
-            count: 4,
-        },
-        {
-            name: "Деталь 3",
-            height: 6000,
+            name: "Горизонтальные стойки (6м)",
+            height: 8000,
             length: 30,
             width: 30,
-            heightSelf: 500,
-            count: 4,
+            heightSelf: 6000,
+            count: 2,
         },
         {
-            name: "Деталь 4",
-            height: 500,
-            length: 30,
-            width: 60,
-            heightSelf: 500,
-            count: 1,
-        },]
+          name: "Декор",
+          height: 6000,
+          length: 30,
+          width: 60,
+          heightSelf: 1380,
+          count: 6,
+        },
+      ]
     }
 ])
 
@@ -58,7 +59,6 @@ function breakIntoGroups(item) {
     let groups = []
     let group = null
     let index = null
-    let heightSelf = 0
 
     for (var i in comp) {
         group = groups.find((g) => {
