@@ -126,6 +126,16 @@
                 type="number"
                 name="count"
                 v-model="eCount"
+                @keydown.enter="
+                  addComponent(
+                    eName,
+                    eHeight,
+                    eLength,
+                    eWidth,
+                    eHeightSelf,
+                    eCount
+                  )
+                "
               />
             </td>
             <td>
@@ -147,14 +157,41 @@
           </tr>
         </tbody>
       </table>
-    </div>
-    <div class="card-in scrollable">
+
+      <hr />
+
       <h4 style="color: #0077e6">Площадь окраски: {{ sPaint }} м^2</h4>
-      <h4 style="color: #0077e6">Хлысты с учетом спила:</h4>
-      <h4 style="color: #0077e6" v-for="s in countSticks" :key="s.name">
-        Хлыст {{ s.name }}
-        <p v-for="(stick, index) in s.stick" :key="index">  {{ index+1 }}. Детали, мм: {{ stick.details }} <br> Остаток, мм: {{stick.tail}}</p>
-      </h4>
+      <h4 style="color: #0077e6">Хлысты с учетом спила деталей:</h4>
+
+      <div v-for="s in countSticks" :key="s.name">
+        <h4 style="color: #0077e6">Хлыст {{ s.name }}</h4>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Название детали</th>
+              <th>Длина детали</th>
+              <th>Кол-во</th>
+            </tr>
+          </thead>
+
+          <tbody v-for="(stick, i) in s.stick" :key="i">
+            <tr>
+              <th :colspan="4">{{ i + 1 }}</th>
+            </tr>
+            <tr v-for="(detail, j) in stick.details" :key="j">
+              <td>{{ detail.name }}</td>
+              <td class="number">{{ detail.heightSelf }}</td>
+              <td class="number">{{ detail.countInStick }}</td>
+            </tr>
+            <tr>
+              <td>
+                <h4>Остаток: {{ stick.tail }}</h4>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -162,7 +199,7 @@
 <script setup>
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, countSticks, findTail } = $(useItems());
+let { chosenItem, arrayItems, sPaint, countSticks } = $(useItems());
 
 let eName = $ref(null);
 let eHeight = $ref(null);
