@@ -69,21 +69,32 @@ function breakIntoGroups(item) {
             }
         })
 
-        comp[i].height === comp[i].heightSelf ? comp[i].heightSelf : comp[i].heightSelf += item.saw
-
         if (group) {
             index = groups.indexOf(group)
-            groups[index].components.push(comp[i])
+            groups[index].components.push({
+                name: comp[i].name,
+                height: comp[i].height,
+                length: comp[i].length,
+                width: comp[i].width,
+                heightSelf: comp[i].heightSelf + item.saw,
+                count: comp[i].count
+            })
             group = null
         } else {
             groups.push({
                 name: comp[i].length + "x" + comp[i].width + "x" + comp[i].height,
-                components: [comp[i]]
+                components: [{
+                    name: comp[i].name,
+                    height: comp[i].height,
+                    length: comp[i].length,
+                    width: comp[i].width,
+                    heightSelf: comp[i].heightSelf + item.saw,
+                    count: comp[i].count
+                }]
             })
         }
     }
 
-    console.log(groups);
     return groups
 }
 
@@ -91,6 +102,10 @@ function binPacking(item) {
     let sumHeight = 0
     let f = false
     let bin = []
+    let check = null
+
+    let detail = null
+    let index = null
 
     let groups = breakIntoGroups(item)
 
@@ -99,10 +114,26 @@ function binPacking(item) {
         for (var j in groups[i].components) {
             for (let l = 0; l < groups[i].components[j].count; l++) {
                 for (var k in bin[i].stick) {
-                    if (bin[i].stick[k].tail - groups[i].components[j].heightSelf >= 0) {
-                        bin[i].stick[k].details.push(groups[i].components[j])
+                    check = bin[i].stick[k].tail - groups[i].components[j].heightSelf
+                    if (check >= 0 || -check <= item.saw) {
+                        bin[i].stick[k].tail - groups[i].components[j].heightSelf - item.saw <= 0 ? groups[i].components[j].heightSelf -= item.saw : groups[i].components[j].heightSelf
+
+                        detail = bin[i].stick[k].details.find((d) => { if (d.name === groups[i].components[j].name) { return d } else { return null } })
+                        if (detail) {
+                            index = bin[i].stick[k].details.indexOf(detail)
+                            bin[i].stick[k].details[index].countInStick++
+                        } else {
+                            bin[i].stick[k].details.push({
+                                ...groups[i].components[j],
+                                countInStick: 1
+                            })
+                        }
+
+                        detail = null
+
+                        // bin[i].stick[k].details.push(groups[i].components[j])
                         sumHeight = bin[i].stick[k].details.reduce(function (sum, elem) {
-                            return sum + elem.heightSelf;
+                            return sum + elem.heightSelf * elem.countInStick;
                         }, 0);
                         bin[i].stick[k].tail = groups[i].components[0].height - sumHeight
                         f = true
@@ -112,7 +143,10 @@ function binPacking(item) {
                 }
                 if (!f) {
                     bin[i].stick.push({
-                        details: [groups[i].components[j]],
+                        details: [{
+                            ...groups[i].components[j],
+                            countInStick: 1
+                        }],
                         tail: groups[i].components[0].height - groups[i].components[j].heightSelf
                     })
                     bin[i].stick.sort((a, b) => a.tail - b.tail)
@@ -126,13 +160,6 @@ function binPacking(item) {
     return bin
 }
 
-function findTail(d, arraySticks) {
-    return arraySticks.find((i) => {
-        if (i.stick === (d.length + "x" + d.width + "x" + d.height) && d.height !== d.heightSelf)
-            return i
-    })
-}
-
 let sPaint = computed(() => calcArea(chosenItem))
 let countSticks = computed(() => binPacking(chosenItem))
 
@@ -141,7 +168,6 @@ export function useItems() {
         sPaint,
         arrayItems,
         chosenItem,
-        countSticks,
-        findTail
+        countSticks
     })
 }
