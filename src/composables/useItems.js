@@ -69,49 +69,42 @@ function breakIntoGroups(item) {
             }
         })
 
-        comp[i].height === comp[i].heightSelf ? heightSelf = comp[i].heightSelf : heightSelf = comp[i].heightSelf + item.saw
+        comp[i].height === comp[i].heightSelf ? comp[i].heightSelf : comp[i].heightSelf += item.saw
 
         if (group) {
             index = groups.indexOf(group)
-            groups[index].params.push({
-                height: comp[i].height,
-                heightSelf: heightSelf,
-                count: comp[i].count
-            })
+            groups[index].components.push(comp[i])
             group = null
         } else {
             groups.push({
                 name: comp[i].length + "x" + comp[i].width + "x" + comp[i].height,
-                params: [{
-                    height: comp[i].height,
-                    heightSelf: heightSelf,
-                    count: comp[i].count
-                }]
+                components: [comp[i]]
             })
         }
     }
 
+    console.log(groups);
     return groups
 }
 
 function binPacking(item) {
-    let sumHeight
+    let sumHeight = 0
     let f = false
     let bin = []
 
-    let arrGroups = breakIntoGroups(item)
+    let groups = breakIntoGroups(item)
 
-    for (var i in arrGroups) {
-        bin.push({ name: arrGroups[i].name, stick: [{ details: [], tail: arrGroups[i].params[0].height }] })
-        for (var j in arrGroups[i].params) {
-            for (let l = 0; l < arrGroups[i].params[j].count; l++) {
+    for (var i in groups) {
+        bin.push({ name: groups[i].name, stick: [{ details: [], tail: groups[i].components[0].height }] })
+        for (var j in groups[i].components) {
+            for (let l = 0; l < groups[i].components[j].count; l++) {
                 for (var k in bin[i].stick) {
-                    if (bin[i].stick[k].tail - arrGroups[i].params[j].heightSelf >= 0) {
-                        bin[i].stick[k].details.push(arrGroups[i].params[j].heightSelf)
+                    if (bin[i].stick[k].tail - groups[i].components[j].heightSelf >= 0) {
+                        bin[i].stick[k].details.push(groups[i].components[j])
                         sumHeight = bin[i].stick[k].details.reduce(function (sum, elem) {
-                            return sum + elem;
+                            return sum + elem.heightSelf;
                         }, 0);
-                        bin[i].stick[k].tail = arrGroups[i].params[0].height - sumHeight
+                        bin[i].stick[k].tail = groups[i].components[0].height - sumHeight
                         f = true
                         bin[i].stick.sort((a, b) => a.tail - b.tail)
                         break
@@ -119,8 +112,8 @@ function binPacking(item) {
                 }
                 if (!f) {
                     bin[i].stick.push({
-                        details: [arrGroups[i].params[j].heightSelf],
-                        tail: arrGroups[i].params[0].height - arrGroups[i].params[j].heightSelf
+                        details: [groups[i].components[j]],
+                        tail: groups[i].components[0].height - groups[i].components[j].heightSelf
                     })
                     bin[i].stick.sort((a, b) => a.tail - b.tail)
                 }
