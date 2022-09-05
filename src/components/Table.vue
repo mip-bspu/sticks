@@ -21,55 +21,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in chosenItem.components" :key="item.name">
-            <td style="text-align: left">
-              <input
-                class="inputFill"
-                type="text"
-                name="name"
-                v-model="item.name"
-              />
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="height"
-                v-model="item.height"
-              />
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="length"
-                v-model="item.length"
-              />
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="width"
-                v-model="item.width"
-              />
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="heightS"
-                v-model="item.heightSelf"
-                :max="item.height"
-              />
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="count"
-                v-model="item.count"
-              />
+          <tr v-for="(item, i) in chosenItem.components" :key="i">
+            <td v-for="(value, k) in item" :key="k">
+              <input v-model="item[k]" />
             </td>
             <td>
               <button @click="deleteComponent(item)" style="color: red">
@@ -202,7 +156,7 @@
 import { computed, watch } from "vue";
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, countSticks, clump } = $(useItems());
+let { chosenItem, arrayItems, sPaint, countSticks, errors } = $(useItems());
 
 let eName = $ref("");
 let eHeight = $ref(null);
@@ -210,6 +164,14 @@ let eLength = $ref(null);
 let eWidth = $ref(null);
 let eCount = $ref(null);
 let eHeightSelf = $ref(null);
+
+let errorss = {
+  1: {
+    name: "такая деталь уже существует",
+  },
+};
+
+watch(() => errors);
 
 function addComponent(name, height, length, width, heightSelf, count) {
   let newComponent = {
@@ -238,5 +200,10 @@ function deleteComponent(item) {
 .resultTable {
   border: 1px solid rgb(185, 185, 185);
   border-spacing: 0px;
+}
+
+.warning {
+  background-color: crimson;
+  color: white;
 }
 </style>
