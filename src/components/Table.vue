@@ -34,8 +34,8 @@
               />
             </td>
             <td>
-              <select v-model="item.stickId" class="inputFill">
-                <option v-for="s in sticks" :key="s.id">
+              <select v-model="item.stickId" class="inputFill number">
+                <option v-for="s in sticks" :key="s.id" :value="s.id">
                   {{ s.length + "x" + s.width + "x" + s.height }}
                 </option>
               </select>
@@ -75,8 +75,8 @@
               />
             </td>
             <td>
-              <select>
-                <option v-for="s in sticks" :key="s.id">
+              <select v-model="eStick">
+                <option v-for="s in sticks" :key="s.id" :value="s.id">
                   {{ s.length + "x" + s.width + "x" + s.height }}
                 </option>
               </select>
@@ -99,9 +99,7 @@
               />
             </td>
             <td>
-              <button @click="addComponent(eName, eHeightSelf, eCount)">
-                +
-              </button>
+              <button @click="addComponent()">+</button>
             </td>
           </tr>
         </tbody>
@@ -158,6 +156,7 @@ let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks } = $(
 let eName = $ref("");
 let eCount = $ref(null);
 let eHeightSelf = $ref(null);
+let eStick = $ref(null);
 
 let errorss = {
   1: {
@@ -167,14 +166,17 @@ let errorss = {
 
 watch(() => errors);
 
-function addComponent(name, heightSelf, count) {
+function addComponent() {
   chosenItem.components.push({
-    name: name,
-    heightSelf: heightSelf,
-    count: count,
+    name: eName,
+    stickId: eStick,
+    heightSelf: eHeightSelf,
+    count: eCount,
   });
 
-  eName = eCount = eHeightSelf = null;
+  console.log(chosenItem);
+
+  eName = eCount = eHeightSelf = eStick = null;
 }
 
 function deleteComponent(item) {
