@@ -1,18 +1,27 @@
 <template>
   <ul class="nav">
-    <li>Изделия</li>
-    <li>Хлысты</li>
+    <li><router-link class="router" to="/">Изделия</router-link></li>
+    <li><router-link class="router" to="/sticks">Хлысты</router-link></li>
   </ul>
 </template>
 
 <style scoped>
+.router {
+  text-decoration: none; 
+  color: aliceblue;
+}
+
+.router:hover {
+  color: #0077e6;
+}
+
 ul {
   list-style-type: none;
   margin-bottom: 1rem;
+  padding-left: 2rem;
   padding: 0;
   overflow: hidden;
   background-color: #0077e6;
-  color: aliceblue;
   position: fixed;
   top: 0;
   width: 100%;
