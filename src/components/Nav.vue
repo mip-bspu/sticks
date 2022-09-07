@@ -7,12 +7,8 @@
 
 <style scoped>
 .router {
-  text-decoration: none; 
+  text-decoration: none;
   color: aliceblue;
-}
-
-.router:hover {
-  color: #0077e6;
 }
 
 ul {
@@ -33,6 +29,6 @@ li {
 
 li:hover {
   color: #0077e6;
-  background-color: aliceblue;
+  background-color: rgba(240, 248, 255, 0.137);
 }
 </style>

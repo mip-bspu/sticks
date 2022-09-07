@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" style="flex: 0 1 20%">
     <h3>
       <span>ИЗДЕЛИЯ</span>
     </h3>
@@ -22,7 +22,7 @@
         type="text"
         v-model="item.name"
         @keydown.enter="addItem"
-        placeholder="Введите название"
+        placeholder="Введите название..."
         autofocus
       />
       <button :disabled="!item.name" @click="addItem">+</button>
