@@ -5,16 +5,19 @@
     <div class="card-in scrollable">
       <div>
         <h4>Ширина спила, мм</h4>
-        <input type="number" class="number" v-model="chosenItem.saw" />
+        <input
+          type="number"
+          class="number"
+          style="width: 15%"
+          v-model="chosenItem.saw"
+        />
       </div>
       <h4>Детали</h4>
       <table>
         <thead>
           <tr>
             <th style="text-align: left">Название</th>
-            <th style="text-align: right">Высота хлыста, мм</th>
-            <th style="text-align: right">Длина хлыста, мм</th>
-            <th style="text-align: right">Ширина хлыста, мм</th>
+            <th style="text-align: right">Параметры хлыста, мм</th>
             <th style="text-align: right">Высота детали, мм</th>
             <th style="text-align: right">Кол-во деталей</th>
             <th></th>
@@ -22,11 +25,41 @@
         </thead>
         <tbody>
           <tr v-for="(item, i) in chosenItem.components" :key="i">
-            <td v-for="(value, k) in item" :key="k">
-              <input v-model="item[k]" />
+            <td style="text-align: left">
+              <input
+                class="inputFill"
+                type="text"
+                name="name"
+                v-model="item.name"
+              />
             </td>
             <td>
-              <button @click="deleteComponent(item)" style="color: red">
+              <select v-model="item.stickId" class="inputFill">
+                <option v-for="s in sticks" :key="s.id">
+                  {{ s.length + "x" + s.width + "x" + s.height }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="heightS"
+                v-model="item.heightSelf"
+                :max="item.height"
+              />
+            </td>
+            <td>
+              <input
+                class="number inputFill"
+                type="number"
+                name="count"
+                v-model="item.count"
+              />
+            </td>
+
+            <td>
+              <button @click="deleteComponent(item)" style="color: crimson">
                 x
               </button>
             </td>
@@ -35,42 +68,24 @@
           <tr class="newRow">
             <td>
               <input
-                placeholder="Введите название"
+                placeholder="Введите название..."
                 type="text"
                 name="name"
                 v-model="eName"
               />
             </td>
             <td>
-              <input
-                class="number"
-                type="number"
-                name="height"
-                v-model="eHeight"
-              />
-            </td>
-            <td>
-              <input
-                class="number"
-                type="number"
-                name="length"
-                v-model="eLength"
-              />
-            </td>
-            <td>
-              <input
-                class="number"
-                type="number"
-                name="width"
-                v-model="eWidth"
-              />
+              <select>
+                <option v-for="s in sticks" :key="s.id">
+                  {{ s.length + "x" + s.width + "x" + s.height }}
+                </option>
+              </select>
             </td>
             <td>
               <input
                 class="number"
                 type="number"
                 name="height"
-                :max="eHeight"
                 v-model="eHeightSelf"
               />
             </td>
@@ -80,31 +95,11 @@
                 type="number"
                 name="count"
                 v-model="eCount"
-                @keydown.enter="
-                  addComponent(
-                    eName,
-                    eHeight,
-                    eLength,
-                    eWidth,
-                    eHeightSelf,
-                    eCount
-                  )
-                "
+                @keydown.enter="addComponent(eName, eHeightSelf, eCount)"
               />
             </td>
             <td>
-              <button
-                @click="
-                  addComponent(
-                    eName,
-                    eHeight,
-                    eLength,
-                    eWidth,
-                    eHeightSelf,
-                    eCount
-                  )
-                "
-              >
+              <button @click="addComponent(eName, eHeightSelf, eCount)">
                 +
               </button>
             </td>
@@ -156,12 +151,11 @@
 import { computed, watch } from "vue";
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, countSticks, errors } = $(useItems());
+let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks } = $(
+  useItems()
+);
 
 let eName = $ref("");
-let eHeight = $ref(null);
-let eLength = $ref(null);
-let eWidth = $ref(null);
 let eCount = $ref(null);
 let eHeightSelf = $ref(null);
 
@@ -173,22 +167,18 @@ let errorss = {
 
 watch(() => errors);
 
-function addComponent(name, height, length, width, heightSelf, count) {
-  let newComponent = {
+function addComponent(name, heightSelf, count) {
+  chosenItem.components.push({
     name: name,
-    length: length,
-    height: height,
     heightSelf: heightSelf,
-    width: width,
     count: count,
-  };
-  chosenItem.components.push(newComponent);
-  eName = eHeight = eLength = eWidth = eCount = eHeightSelf = null;
+  });
+
+  eName = eCount = eHeightSelf = null;
 }
 
 function deleteComponent(item) {
-  const id = chosenItem.components.indexOf(item);
-  chosenItem.components.splice(id, 1);
+  chosenItem.components.splice(chosenItem.components.indexOf(item), 1);
 }
 </script>
 

@@ -1,11 +1,21 @@
 import { computed } from "vue"
+import { useId } from "./useId"
+
+let { getId } = $(useId())
 
 let sticks = $ref([
   {
+    id: getId(),
     height: 6000,
     length: 30,
     width: 30
-  }
+  },
+  {
+    id: getId(),
+    height: 6000,
+    length: 30,
+    width: 60
+  },
 ])
 
 let arrayItems = $ref([
@@ -14,6 +24,7 @@ let arrayItems = $ref([
     saw: 1,
     components: [{
       name: "Вертикальные стойки",
+      stickId: 0,
       height: 8000,
       length: 30,
       width: 30,
@@ -22,6 +33,7 @@ let arrayItems = $ref([
     },
     {
       name: "Горизонтальные стойки (4,5м)",
+      stickId: 0,
       height: 6000,
       length: 30,
       width: 30,
@@ -30,6 +42,7 @@ let arrayItems = $ref([
     },
     {
       name: "Горизонтальные стойки (6м)",
+      stickId: 0,
       height: 8000,
       length: 30,
       width: 30,
@@ -38,6 +51,7 @@ let arrayItems = $ref([
     },
     {
       name: "Декор",
+      stickId: 0,
       height: 6000,
       length: 30,
       width: 60,
@@ -171,7 +185,8 @@ function binPacking(item) {
 function checkFields(components) {
   let msg = null
   let check = {}
-  debugger
+
+  console.log(sticks);
 
   for (var i in components) {
     for (var k in components[i]) {
@@ -202,7 +217,6 @@ function checkNumber(num, height) {
 }
 
 function checkName(name) {
-  debugger
   if (chosenItem.components.find((c) => c.name === name)) {
     return "Деталь с таким названием уже существует"
   }
@@ -218,6 +232,7 @@ export function useItems() {
     arrayItems,
     chosenItem,
     countSticks,
-    errors
+    errors,
+    sticks
   })
 }
