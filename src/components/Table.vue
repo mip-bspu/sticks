@@ -29,6 +29,7 @@
               <input v-if="k != 'stickId'" 
                 v-model="item[k]" 
                 :type="getType(chosenItem.components[0], k)"
+                :class="{number: getType(chosenItem.components[0], k) == 'number', inputFill: true}"
               />
 
               <select v-else v-model="item.stickId" class="inputFill number">
