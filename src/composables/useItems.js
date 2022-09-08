@@ -66,6 +66,25 @@ function calcArea(item) {
   return area / 1000000
 }
 
+function groupById(item, stick) {
+  let group = item.components.filter((o) => stick === o.stickId).map((e) => JSON.parse(JSON.stringify(e)))
+
+  group.forEach(el => {
+    el.heightSelf += item.saw
+  });
+
+  debugger
+
+  return group
+}
+
+function getCountUsedSticks(item) {
+  let arr = item.components.map((el) => el.stickId)
+
+  // debugger
+  return Array.from(new Set(arr));
+}
+
 function binPacking(item) {
   let sumHeight = 0
   let bin = []
@@ -76,17 +95,17 @@ function binPacking(item) {
   let detail = null
   let index = null
 
-  for (var i in sticks) {
-    debugger
-    group = item.components.filter((o) => sticks[i].id === o.stickId).map((e) => JSON.parse(JSON.stringify(e)))
+  let count = getCountUsedSticks(item)
+  // debugger
+  for (let i = 0; i < count.length; i++) {
+    group = groupById(item, count[i])
 
     if (group?.length) {
-      group.forEach(el => {
-        el.heightSelf += item.saw
-      });
-      
-      bin.push({ stickObj: sticks[i], sticks: [{ details: [], tail: sticks[i].height }] })
 
+      let stick = sticks.find((o) => o.id === count[i])
+      bin.push({ stickObj: stick, sticks: [{ details: [], tail: stick.height }] })
+
+      debugger
       for (var j in group) {
         for (let l = 0; l < group[j].count; l++) {
           for (var k in bin[i].sticks) {
@@ -118,7 +137,7 @@ function binPacking(item) {
               sumHeight = bin[i].sticks[k].details.reduce(function (sum, elem) {
                 return sum + elem.heightSelf * elem.countInStick;
               }, 0);
-              bin[i].sticks[k].tail = sticks[i].height - sumHeight
+              bin[i].sticks[k].tail = stick.height - sumHeight
               f = true
               bin[i].sticks.sort((a, b) => a.tail - b.tail)
               break
@@ -126,7 +145,7 @@ function binPacking(item) {
           }
 
           if (!f) {
-            if (group[j].heightSelf - item.saw === sticks[i].height) {
+            if (group[j].heightSelf - item.saw === stick.height) {
               group[j].heightSelf -= item.saw
             }
             bin[i].sticks.push({
@@ -134,7 +153,7 @@ function binPacking(item) {
                 ...group[j],
                 countInStick: 1
               }],
-              tail: sticks[i].height - group[j].heightSelf
+              tail: stick.height - group[j].heightSelf
             })
             bin[i].sticks.sort((a, b) => a.tail - b.tail)
           }
