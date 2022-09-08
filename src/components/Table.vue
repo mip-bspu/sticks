@@ -25,37 +25,17 @@
         </thead>
         <tbody>
           <tr v-for="(item, i) in chosenItem.components" :key="i">
-            <td style="text-align: left">
-              <input
-                class="inputFill"
-                type="text"
-                name="name"
-                v-model="item.name"
+            <td v-for="(value, k) in item" :key="k">
+              <input v-if="k != 'stickId'" 
+                v-model="item[k]" 
+                :type="getType(chosenItem.components[0], k)"
               />
-            </td>
-            <td>
-              <select v-model="item.stickId" class="inputFill number">
+
+              <select v-else v-model="item.stickId" class="inputFill number">
                 <option v-for="s in sticks" :key="s.id" :value="s.id">
                   {{ s.length + "x" + s.width + "x" + s.height }}
                 </option>
               </select>
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="heightS"
-                v-model="item.heightSelf"
-                :max="item.height"
-              />
-            </td>
-            <td>
-              <input
-                class="number inputFill"
-                type="number"
-                name="count"
-                v-model="item.count"
-              />
             </td>
             <td>
               <button @click="deleteComponent(item)" style="color: crimson">
@@ -97,6 +77,7 @@
                 @keydown.enter="addComponent(eName, eHeightSelf, eCount)"
               />
             </td>
+
             <td>
               <button @click="addComponent()">+</button>
             </td>
@@ -110,7 +91,12 @@
       </h3>
 
       <div v-for="s in countSticks" :key="s.stickObj.id">
-        <h3 style="color: #0077e6">Хлыст {{ s.stickObj.length + "x" + s.stickObj.width + "x" + s.stickObj.height }}</h3>
+        <h3 style="color: #0077e6">
+          Хлыст
+          {{
+            s.stickObj.length + "x" + s.stickObj.width + "x" + s.stickObj.height
+          }}
+        </h3>
         <br />
         <table class="resultTable">
           <thead>
@@ -145,9 +131,7 @@
 import { computed, watch } from "vue";
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks } = $(
-  useItems()
-);
+let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } = $(useItems());
 
 let eName = $ref("");
 let eCount = $ref(null);

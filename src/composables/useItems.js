@@ -182,6 +182,19 @@ function checkFields(components) {
   }
 }
 
+function getType(c, el) {
+  let types = {}
+  
+  for (const key in c) {
+    types[key] = key == 'name' ? 'text' : 'number'
+  }
+  
+  for(var key in types){
+    if(key === el)
+      return types[key]
+  }
+}
+
 function checkNumber(num, height) {
   switch (num) {
     case num < 0: {
@@ -213,6 +226,7 @@ export function useItems() {
     chosenItem,
     countSticks,
     errors,
-    sticks
+    sticks,
+    getType
   })
 }
