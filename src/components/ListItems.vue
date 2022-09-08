@@ -13,6 +13,7 @@
           @click="selectItem(item)"
         >
           {{ item.name }}
+          <button style="color: crimson" @click="deleteItem(item)">x</button>
         </li>
       </ul>
     </div>
@@ -49,7 +50,16 @@ function addItem() {
 function selectItem(item) {
   chosenItem = item;
 }
+
+function deleteItem(item) {
+  arrayItems.splice(arrayItems.indexOf(item), 1);
+  console.log(arrayItems);
+}
 </script>
 
-<style>
+<style scoped>
+li {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
