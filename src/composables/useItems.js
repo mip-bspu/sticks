@@ -65,15 +65,17 @@ let arrayItems = $ref([
 let chosenItem = $ref(arrayItems[0])
 
 function calcArea(item) {
-  let s = $ref(0)
+  let area = $ref(0)
+  let  stick = null
 
   if (item) {
     let comp = item.components
     for (var i in comp) {
-      s += 2 * comp[i].heightSelf * (comp[i].length + comp[i].width) * comp[i].count
+      stick = sticks.find((o) => { if(o.id === comp[i].stickId) return o})
+      area += 2 * comp[i].heightSelf * (stick.length + stick.width) * comp[i].count
     }
   }
-  return s / 1000
+  return area / 1000000
 }
 
 function breakIntoGroups(item) {
