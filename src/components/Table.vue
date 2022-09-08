@@ -57,7 +57,6 @@
                 v-model="item.count"
               />
             </td>
-
             <td>
               <button @click="deleteComponent(item)" style="color: crimson">
                 x
@@ -106,15 +105,13 @@
       </table>
 
       <hr />
-
       <h3 style="color: #0077e6">
         Общая площадь окраски: {{ sPaint }} м <sub>2</sub>
       </h3>
 
-      <div v-for="s in countSticks" :key="s.name">
-        <h3 style="color: #0077e6">Хлыст {{ s.name }}</h3>
+      <div v-for="s in countSticks" :key="s.stickObj.id">
+        <h3 style="color: #0077e6">Хлыст {{ s.stickObj.length + "x" + s.stickObj.width + "x" + s.stickObj.height }}</h3>
         <br />
-
         <table class="resultTable">
           <thead>
             <tr>
@@ -123,19 +120,18 @@
               <th style="text-align: right">Кол-во деталей</th>
             </tr>
           </thead>
-
-          <tbody v-for="(stick, i) in s.stick" :key="i">
+          <tbody v-for="(s, i) in s.sticks" :key="i">
             <tr>
               <th colspan="4" class="nStick">{{ i + 1 }} хлыст</th>
             </tr>
-            <tr v-for="(detail, j) in stick.details" :key="j">
+            <tr v-for="(detail, j) in s.details" :key="j">
               <td>{{ detail.name }}</td>
               <td class="number">{{ detail.heightSelf }}</td>
               <td class="number">{{ detail.countInStick }}</td>
             </tr>
             <tr>
               <th :colspan="4" style="text-align: left">
-                <b>Остаток: {{ stick.tail }} мм</b>
+                <b>Остаток: {{ s.tail }} мм</b>
               </th>
             </tr>
           </tbody>
@@ -173,8 +169,6 @@ function addComponent() {
     heightSelf: eHeightSelf,
     count: eCount,
   });
-
-  console.log(chosenItem);
 
   eName = eCount = eHeightSelf = eStick = null;
 }
