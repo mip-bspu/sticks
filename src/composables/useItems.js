@@ -62,8 +62,9 @@ function calcArea(item) {
       stick = sticks.find((o) => { if (o.id === comp[i].stickId) return o })
       area += 2 * comp[i].heightSelf * (stick.length + stick.width) * comp[i].count
     }
+
   }
-  return area / 1000000
+  return (area / 1000000).toFixed(4)
 }
 
 function groupById(item, stick) {
@@ -73,15 +74,12 @@ function groupById(item, stick) {
     el.heightSelf += item.saw
   });
 
-  debugger
-
   return group
 }
 
 function getCountUsedSticks(item) {
   let arr = item.components.map((el) => el.stickId)
 
-  // debugger
   return Array.from(new Set(arr));
 }
 
@@ -96,7 +94,6 @@ function binPacking(item) {
   let index = null
 
   let count = getCountUsedSticks(item)
-  // debugger
   for (let i = 0; i < count.length; i++) {
     group = groupById(item, count[i])
 
@@ -105,7 +102,6 @@ function binPacking(item) {
       let stick = sticks.find((o) => o.id === count[i])
       bin.push({ stickObj: stick, sticks: [{ details: [], tail: stick.height }] })
 
-      debugger
       for (var j in group) {
         for (let l = 0; l < group[j].count; l++) {
           for (var k in bin[i].sticks) {
