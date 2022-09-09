@@ -86,7 +86,7 @@
             </td>
 
             <td>
-              <button @click="addComponent()">+</button>
+              <button :disabled="check" @click="addComponent()">+</button>
             </td>
           </tr>
         </tbody>
@@ -141,16 +141,27 @@ import { useItems } from "../composables/useItems";
 let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
   $(useItems());
 
-let eName = $ref("");
+let eName = $ref(null);
 let eCount = $ref(null);
 let eHeightSelf = $ref(null);
 let eStick = $ref(null);
+let check = $ref(true);
 
-let errorss = {
-  1: {
-    name: "такая деталь уже существует",
-  },
-};
+watch(
+  () => [eName, eCount, eHeightSelf, eStick],
+  () => {
+    if (
+      eName === null ||
+      eCount === null ||
+      eHeightSelf === null ||
+      eStick === null
+    ) {
+      return (check = true);
+    } else {
+      return (check = false);
+    }
+  }
+);
 
 function addComponent() {
   chosenItem.components.push({
