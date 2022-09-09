@@ -4,8 +4,8 @@ import Product from "../components/Product.vue"
 
 
 const routes = [
-  { path: '/sticks', component: Sticks },
-  { path: '/', component: Product }
+  { path: '/sticks', component: Sticks, name: 'Материалы' },
+  { path: '/', component: Product, name: 'Изделия' }
 ]
 
 export const router = createRouter({

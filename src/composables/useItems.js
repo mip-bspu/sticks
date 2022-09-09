@@ -1,54 +1,17 @@
-import { computed } from "vue"
+import { computed, watch } from "vue"
 import { useId } from "./useId"
+import { useStore } from "./useStore"
 
 let { getId } = $(useId())
+let { store } = $(useStore())
 
-let sticks = $ref([
-  {
-    id: getId(),
-    height: 6000,
-    length: 30,
-    width: 30
-  },
-  {
-    id: getId(),
-    height: 6000,
-    length: 30,
-    width: 60
-  },
-])
+let sticks = $ref(store.sticks)
+let arrayItems = $ref(store.arrayItems)
 
-let arrayItems = $ref([
-  {
-    name: "Навес",
-    saw: 1,
-    components: [{
-      name: "11",
-      stickId: 0,
-      heightSelf: 2000,
-      count: 2,
-    },
-    {
-      name: "22",
-      stickId: 0,
-      heightSelf: 1500,
-      count: 2,
-    },
-    {
-      name: "33",
-      stickId: 0,
-      heightSelf: 6000,
-      count: 2,
-    },
-    {
-      name: "44",
-      stickId: 1,
-      heightSelf: 2000,
-      count: 3,
-    }
-    ]
-  }
-])
+debugger
+
+watch(() => arrayItems, () => store.arrayItems = arrayItems, { deep: true, immediate: true })
+watch(() => sticks, () => store.sticks = sticks, { deep: true, immediate: true })
 
 let chosenItem = $ref(arrayItems[0])
 
@@ -159,38 +122,18 @@ function binPacking(item) {
     }
   }
 
-  console.log(bin);
   return (bin)
-}
-
-//!
-function checkFields(components) {
-  let msg = null
-  let check = {}
-
-  for (var i in components) {
-    for (var k in components[i]) {
-      if (isNaN(components[i][k])) {
-        msg = checkName(components[i][k])
-        if (msg) {
-          check[i] = { k: msg }
-        }
-      } else {
-
-      }
-    }
-  }
 }
 
 function getType(c, el) {
   let types = {}
-  
+
   for (const key in c) {
     types[key] = key == 'name' ? 'text' : 'number'
   }
-  
-  for(var key in types){
-    if(key === el)
+
+  for (var key in types) {
+    if (key === el)
       return types[key]
   }
 }
@@ -198,26 +141,54 @@ function getType(c, el) {
 function checkNumber(num, height) {
   switch (num) {
     case num < 0: {
-      return ""
+      console.log("Параметр не может быть меньше 0");
+      return "Параметр не может быть меньше 0"
     };
-    case num < height: {
-      return ""
-    }
+    // case num < height: {
+    //   return ""
+    // }
     case num === null: {
-      return ""
+      console.log("Заполните поле");
+      return "Заполните поле"
     }
   }
 }
 
 function checkName(name) {
-  if (chosenItem.components.find((c) => c.name === name)) {
+  if (chosenItem.components.filter((c) => c.name === name).length > 1) {
     return "Деталь с таким названием уже существует"
   }
 }
 
+function getStick(component) {
+  return sticks.find(s => s.id === component.stickId)
+}
+
 let sPaint = computed(() => calcArea(chosenItem))
 let countSticks = computed(() => binPacking(chosenItem))
-let errors = computed(() => checkFields(chosenItem.components));
+let errors = computed(() => {
+  return chosenItem.components.reduce((acc, component, i) => {
+    acc[i] = {};
+
+    if (chosenItem.components.filter((c) => c.name === component.name).length > 1) {
+      acc[i].name = "Деталь с таким названием уже существует"
+    }
+
+    if (component.heightSelf < 0) {
+      acc[i].heightSelf = `Высота детали не может быть отрицательной`
+    }
+
+    if (component.heightSelf > getStick(component)?.height) {
+      acc[i].heightSelf = `Высота детали должна быть не больше ${getStick(component)?.height}`
+    }
+
+    if (component.count < 0) {
+      acc[i].count = "кол-во деталей не может быть отриц"
+    }
+
+    return acc
+  }, {})
+});
 
 export function useItems() {
   return $$({

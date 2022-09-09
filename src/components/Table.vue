@@ -8,7 +8,7 @@
         <input
           type="number"
           class="number"
-          style="width: 15%"
+          style="width: 20%"
           v-model="chosenItem.saw"
         />
       </div>
@@ -26,10 +26,16 @@
         <tbody>
           <tr v-for="(item, i) in chosenItem.components" :key="i">
             <td v-for="(value, k) in item" :key="k">
-              <input v-if="k != 'stickId'" 
-                v-model="item[k]" 
+              <input
+                v-if="k != 'stickId'"
+                v-model="item[k]"
                 :type="getType(chosenItem.components[0], k)"
-                :class="{number: getType(chosenItem.components[0], k) == 'number', inputFill: true}"
+                :class="{
+                  number: getType(chosenItem.components[0], k) == 'number',
+                  inputFill: true,
+                  error: errors[i][k],
+                }"
+                :title="errors[i][k]"
               />
 
               <select v-else v-model="item.stickId" class="inputFill number">
@@ -132,7 +138,8 @@
 import { computed, watch } from "vue";
 import { useItems } from "../composables/useItems";
 
-let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } = $(useItems());
+let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
+  $(useItems());
 
 let eName = $ref("");
 let eCount = $ref(null);
@@ -144,8 +151,6 @@ let errorss = {
     name: "такая деталь уже существует",
   },
 };
-
-watch(() => errors);
 
 function addComponent() {
   chosenItem.components.push({
@@ -173,7 +178,7 @@ function deleteComponent(item) {
   border-spacing: 0px;
 }
 
-.warning {
+.error {
   background-color: crimson;
   color: white;
 }

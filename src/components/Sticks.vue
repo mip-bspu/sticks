@@ -27,6 +27,7 @@ function deleteStick(s) {
 
 <template>
   <div class="card">
+    <h3>Параметры хлыстов</h3>
     <div class="card-in">
       <table>
         <thead>
@@ -81,13 +82,5 @@ function deleteStick(s) {
 <style scoped>
 th {
   text-align: right;
-}
-.card-in {
-  width: 70%;
-}
-.card {
-  margin-top: 4rem;
-  width: 70%;
-  align-items: center;
 }
 </style>
