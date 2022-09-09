@@ -1,7 +1,24 @@
+<script setup>
+import { router } from "../router/router";
+</script>
 <template>
   <ul class="nav">
-    <li><router-link class="router" to="/">Изделия</router-link></li>
-    <li><router-link class="router" to="/sticks">Хлысты</router-link></li>
+    <router-link class="router" to="/" custom v-slot="{ navigate }">
+      <li
+        :class="{ selected: router.currentRoute.value.name === 'Изделия' }"
+        @click="navigate"
+      >
+        Изделия
+      </li>
+    </router-link>
+    <router-link class="router" to="/sticks" custom v-slot="{ navigate }">
+      <li
+        :class="{ selected: router.currentRoute.value.name === 'Материалы' }"
+        @click="navigate"
+      >
+        Материалы
+      </li>
+    </router-link>
   </ul>
 </template>
 
@@ -25,10 +42,14 @@ ul {
 
 li {
   float: left;
+  color: #f6f6f6;
 }
 
 li:hover {
-  color: #0077e6;
   background-color: rgba(240, 248, 255, 0.137);
+}
+
+.selected {
+  background-color: rgba(241, 243, 253, 0.422);
 }
 </style>
