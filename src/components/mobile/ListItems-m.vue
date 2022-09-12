@@ -35,8 +35,8 @@
   <table-m v-else />
 </template>
 <script setup>
-import { useItems } from "../composables/useItems";
-import TableM from "../components/Table-m.vue";
+import { useItems } from "../../composables/useItems";
+import TableM from "./Table-m.vue";
 
 let { chosenItem, arrayItems } = $(useItems());
 
