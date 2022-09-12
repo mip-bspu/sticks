@@ -1,22 +1,42 @@
 <script setup>
 import { router } from "../router/router";
+import { useSize } from "../composables/useSize";
+import { useItems } from "../composables/useItems";
+import { computed } from "@vue/runtime-core";
+
+let { chosenItem } = $(useItems());
+let { checkSize } = $(useSize());
+let viewBack = computed(() => {
+  debugger;
+  return chosenItem && !checkSize;
+});
 </script>
 <template>
-  <ul class="nav">
-    <router-link class="router" to="/" custom v-slot="{ navigate }">
+  <ul class="mUl" v-if="viewBack">
+    <li class="mLi" @click="chosenItem = null">назад</li>
+  </ul>
+
+  <ul :class="{ mUl: !checkSize, dUl: checkSize }" v-else>
+    <router-link to="/" custom v-slot="{ navigate }">
       <li
         :class="{
           selected: router.currentRoute.value.name === 'Изделия',
-          firstLi: true,
+          firstLi: checkSize,
+          mLi: !checkSize,
+          dLi: checkSize,
         }"
         @click="navigate"
       >
         Изделия
       </li>
     </router-link>
-    <router-link class="router" to="/sticks" custom v-slot="{ navigate }">
+    <router-link to="/sticks" custom v-slot="{ navigate }">
       <li
-        :class="{ selected: router.currentRoute.value.name === 'Материалы' }"
+        :class="{
+          selected: router.currentRoute.value.name === 'Материалы',
+          mLi: !checkSize,
+          dLi: checkSize,
+        }"
         @click="navigate"
       >
         Материалы
@@ -26,31 +46,43 @@ import { router } from "../router/router";
 </template>
 
 <style scoped>
-.router {
-  text-decoration: none;
-  color: aliceblue;
+.dUl,
+.mUl {
+  list-style-type: none;
+  width: 100%;
+  background-color: #0077e6;
+  overflow: hidden;
+  position: fixed;
+  padding: 0;
+}
+.dUl {
+  margin-bottom: 1rem;
+  top: 0;
 }
 
-ul {
-  list-style-type: none;
-  margin-bottom: 1rem;
-  padding-left: 2rem;
-  padding: 0;
-  overflow: hidden;
-  background-color: #0077e6;
-  position: fixed;
-  top: 0;
-  width: 100%;
+.mUl {
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
 }
 
 .firstLi {
   margin-left: 2rem;
 }
 
-li {
+.dLi {
   float: left;
   color: #f6f6f6;
   border-radius: 0;
+}
+
+.mLi {
+  float: left;
+  color: #f6f6f6;
+  border-radius: 0;
+  width: 100%;
+  text-align: center;
 }
 
 li:hover {

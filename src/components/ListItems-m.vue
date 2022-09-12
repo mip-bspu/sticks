@@ -1,15 +1,13 @@
 <template>
-  <div class="card" style="flex: 0 1 20%">
-    <h3>
-      <span>ИЗДЕЛИЯ</span>
-    </h3>
+  <div class="card" v-if="chosenItem === null">
+    <h3>ИЗДЕЛИЯ</h3>
 
     <div class="card-in">
       <ul>
         <li
           v-for="item in arrayItems"
           :key="item.name"
-          :class="{ selected: item === chosenItem, viewBtn: true }"
+          :class="{ selected: item === chosenItem }"
           @click="selectItem(item)"
         >
           {{ item.name }}
@@ -22,7 +20,6 @@
         </li>
       </ul>
     </div>
-
     <div class="setName">
       <input
         type="text"
@@ -34,10 +31,12 @@
       <button :disabled="!item.name" @click="addItem">+</button>
     </div>
   </div>
-</template>
 
+  <table-m v-else />
+</template>
 <script setup>
 import { useItems } from "../composables/useItems";
+import TableM from "../components/Table-m.vue";
 
 let { chosenItem, arrayItems } = $(useItems());
 
@@ -61,10 +60,19 @@ function deleteItem(item) {
   console.log(arrayItems);
 }
 </script>
-
+  
 <style scoped>
+.card-in {
+  align-items: center;
+}
+ul {
+  width: 100%;
+}
 li {
   display: flex;
   justify-content: space-between;
+}
+h3 {
+  margin-top: 0;
 }
 </style>

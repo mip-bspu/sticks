@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" v-if="chosenItem">
     <h3 style="color: #0077e6">{{ chosenItem?.name }}</h3>
 
     <div class="card-in scrollable">
