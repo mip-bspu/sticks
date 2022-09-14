@@ -31,6 +31,19 @@ function getLabel(key) {
   }
 }
 
+function useStick(s) {
+  for (var item in arrayItems) {
+    let check = arrayItems[item].components.find((c) => { if (c.stickId === s) { return true } else { return false } })
+
+    if (check) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+}
+
 function calcArea(item) {
   let area = $ref(0)
   let stick = null
@@ -216,6 +229,7 @@ export function useItems() {
     sticks,
     getType,
     chosenStick,
-    getLabel
+    getLabel,
+    useStick
   })
 }

@@ -5,7 +5,7 @@ import { mdiClose, mdiPlus } from "@mdi/js";
 import MaterialForm from "./Material-form-m.vue";
 
 let { getId } = $(useId());
-let { sticks, chosenStick } = $(useItems());
+let { sticks, chosenStick, useStick } = $(useItems());
 
 let eHeight = $ref(0);
 let eLength = $ref(0);
@@ -47,8 +47,20 @@ function selectStick(s) {
           >
             {{ `${item.length} x ${item.width} x ${item.height}` }}
           </li>
-          <button style="background-color: unset" @click="deleteStick(item)">
+          <button
+            v-if="!useStick(item.id)"
+            style="background-color: unset"
+            @click="deleteStick(item)"
+          >
             <icon style="fill: crimson" :path="mdiClose" />
+          </button>
+          <button
+            v-else
+            style="background-color: unset"
+            title="деталь используется"
+            disabled
+          >
+            <icon style="fill: lightgrey" :path="mdiClose" />
           </button>
         </div>
       </ul>

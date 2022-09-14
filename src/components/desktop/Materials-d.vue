@@ -4,7 +4,7 @@ import { useId } from "../../composables/useId";
 import { mdiClose, mdiPlus } from "@mdi/js";
 
 let { getId } = $(useId());
-let { sticks } = $(useItems());
+let { sticks, useStick } = $(useItems());
 
 let eHeight = $ref(null);
 let eLength = $ref(null);
@@ -62,7 +62,18 @@ function deleteStick(s) {
                 class="inputFill number"
               />
             </td>
-            <td>
+
+            <td v-if="useStick(item.id)">
+              <button
+                style="background-color: unset"
+                title="деталь используется"
+                disabled
+              >
+                <icon style="fill: lightgrey" :path="mdiClose" />
+              </button>
+            </td>
+
+            <td v-else>
               <button
                 style="background-color: unset"
                 @click="deleteStick(item)"
