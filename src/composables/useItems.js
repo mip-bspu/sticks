@@ -12,6 +12,7 @@ watch(() => arrayItems, () => store.arrayItems = arrayItems, { deep: true, immed
 watch(() => sticks, () => store.sticks = sticks, { deep: true, immediate: true })
 
 let chosenItem = $ref(null)
+let chosenStick = $ref(null);
 
 function calcArea(item) {
   let area = $ref(0)
@@ -196,6 +197,7 @@ export function useItems() {
     countSticks,
     errors,
     sticks,
-    getType
+    getType,
+    chosenStick
   })
 }
