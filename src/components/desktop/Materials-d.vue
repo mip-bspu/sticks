@@ -1,6 +1,7 @@
 <script setup>
 import { useItems } from "../../composables/useItems";
 import { useId } from "../../composables/useId";
+import { mdiClose, mdiPlus } from "@mdi/js";
 
 let { getId } = $(useId());
 let { sticks } = $(useItems());
@@ -62,8 +63,11 @@ function deleteStick(s) {
               />
             </td>
             <td>
-              <button @click="deleteStick(item)" style="color: crimson">
-                x
+              <button
+                style="background-color: unset"
+                @click="deleteStick(item)"
+              >
+                <icon style="fill: crimson" :path="mdiClose" />
               </button>
             </td>
           </tr>
@@ -71,7 +75,11 @@ function deleteStick(s) {
             <td><input type="number" v-model="eHeight" class="number" /></td>
             <td><input type="number" v-model="eLength" class="number" /></td>
             <td><input type="number" v-model="eWidth" class="number" /></td>
-            <td><button @click="addStick()">+</button></td>
+            <td>
+              <button class="b-plus" @click="addStick()">
+                <icon class="i-plus" :path="mdiPlus" />
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
