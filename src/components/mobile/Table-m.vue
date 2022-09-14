@@ -1,41 +1,26 @@
 <script setup>
 import { watch } from "vue";
 import { useItems } from "../../composables/useItems";
+import { mdiClose, mdiPlus } from "@mdi/js";
 
-let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
-  $(useItems());
-
-let eName = $ref(null);
-let eCount = $ref(null);
-let eHeightSelf = $ref(null);
-let eStick = $ref(null);
-let check = $ref(true);
-
-watch(
-  () => [eName, eCount, eHeightSelf, eStick],
-  () => {
-    if (
-      eName === null ||
-      eCount === null ||
-      eHeightSelf === null ||
-      eStick === null
-    ) {
-      return (check = true);
-    } else {
-      return (check = false);
-    }
-  }
-);
+let {
+  chosenItem,
+  arrayItems,
+  sPaint,
+  countSticks,
+  errors,
+  sticks,
+  getType,
+  getLabel,
+} = $(useItems());
 
 function addComponent() {
   chosenItem.components.push({
-    name: eName,
-    stickId: eStick,
-    heightSelf: eHeightSelf,
-    count: eCount,
+    name: "Новая деталь",
+    stickId: 0,
+    heightSelf: 0,
+    count: 0,
   });
-
-  eName = eCount = eHeightSelf = eStick = null;
 }
 
 function deleteComponent(item) {
@@ -47,100 +32,55 @@ function deleteComponent(item) {
   <div class="card">
     <h3 style="color: #0077e6">{{ chosenItem?.name }}</h3>
 
-    <div class="card-in scrollable">
-      <div>
-        <h4>Ширина спила, мм</h4>
+    <div class="card-in">
+      <h4>Название изделия</h4>
+      <input
+        type="text"
+        placeholder="Введите название..."
+        v-model="chosenItem.name"
+      />
+      <h4>Ширина спила, мм</h4>
+      <input type="number" class="number" v-model="chosenItem.saw" />
+    </div>
+
+    <h4>Детали</h4>
+    <div class="card-in" v-for="(item, i) in chosenItem.components" :key="i">
+      <div class="d-input" v-for="(value, k) in item" :key="k">
+        <label
+          ><span>{{ getLabel(k) }}</span></label
+        >
         <input
-          type="number"
-          class="number"
-          style="width: 20%"
-          v-model="chosenItem.saw"
+          v-if="k != 'stickId'"
+          v-model="item[k]"
+          :type="getType(chosenItem.components[0], k)"
+          :class="{
+            nameField: k == 'name',
+            number: getType(chosenItem.components[0], k) == 'number',
+            error: errors[i][k],
+          }"
+          :title="errors[i][k]"
         />
+
+        <select v-else v-model="item.stickId" class="number">
+          <option v-for="s in sticks" :key="s.id" :value="s.id">
+            {{ s.length + "x" + s.width + "x" + s.height }}
+          </option>
+        </select>
       </div>
-      <h4>Детали</h4>
-      <table>
-        <thead>
-          <tr>
-            <th style="text-align: left">Название</th>
-            <th style="text-align: right">Параметры хлыста, мм</th>
-            <th style="text-align: right">Высота детали, мм</th>
-            <th style="text-align: right">Кол-во деталей</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, i) in chosenItem.components" :key="i">
-            <td v-for="(value, k) in item" :key="k">
-              <input
-                v-if="k != 'stickId'"
-                v-model="item[k]"
-                :type="getType(chosenItem.components[0], k)"
-                :class="{
-                  number: getType(chosenItem.components[0], k) == 'number',
-                  inputFill: true,
-                  error: errors[i][k],
-                }"
-                :title="errors[i][k]"
-              />
+      <button @click="deleteComponent(item)">
+        <icon class="i-close" :path="mdiClose" />
+      </button>
+    </div>
+    <button class="b-plus" @click="addComponent()">
+      <icon class="i-plus" :path="mdiPlus" />
+    </button>
 
-              <select v-else v-model="item.stickId" class="inputFill number">
-                <option v-for="s in sticks" :key="s.id" :value="s.id">
-                  {{ s.length + "x" + s.width + "x" + s.height }}
-                </option>
-              </select>
-            </td>
-            <td>
-              <button @click="deleteComponent(item)" style="color: crimson">
-                x
-              </button>
-            </td>
-          </tr>
-
-          <tr class="newRow">
-            <td>
-              <input
-                placeholder="Введите название..."
-                type="text"
-                name="name"
-                v-model="eName"
-              />
-            </td>
-            <td>
-              <select v-model="eStick">
-                <option v-for="s in sticks" :key="s.id" :value="s.id">
-                  {{ s.length + "x" + s.width + "x" + s.height }}
-                </option>
-              </select>
-            </td>
-            <td>
-              <input
-                class="number"
-                type="number"
-                name="height"
-                v-model="eHeightSelf"
-              />
-            </td>
-            <td>
-              <input
-                class="number"
-                type="number"
-                name="count"
-                v-model="eCount"
-              />
-            </td>
-
-            <td>
-              <button :disabled="check" @click="addComponent()">+</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <hr />
-      <h3 style="color: #0077e6">
-        Общая площадь окраски: {{ sPaint }} м <sub>2</sub>
-      </h3>
-
+    <hr />
+    <div class="card-in">
+      <div>
+        <h3 style="color: #0077e6">Общая площадь окраски:</h3>
+        <h4>{{ sPaint }} м <sup>2</sup></h4>
+      </div>
       <div v-for="s in countSticks" :key="s.stickObj.id">
         <h3 style="color: #0077e6">
           Хлыст
@@ -152,9 +92,9 @@ function deleteComponent(item) {
         <table class="resultTable">
           <thead>
             <tr>
-              <th style="text-align: left">Название детали</th>
-              <th style="text-align: right">Длина детали с учётом спила, мм</th>
-              <th style="text-align: right">Кол-во деталей</th>
+              <th style="text-align: left">Название</th>
+              <th style="text-align: right">Длина со спилом, мм</th>
+              <th style="text-align: right">Кол-во</th>
             </tr>
           </thead>
           <tbody v-for="(s, i) in s.sticks" :key="i">
@@ -190,8 +130,18 @@ function deleteComponent(item) {
   border-spacing: 0px;
 }
 
+.d-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .error {
   background-color: crimson;
   color: white;
+}
+
+h4 {
+  margin: 0.5rem 0;
 }
 </style>

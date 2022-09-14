@@ -14,6 +14,23 @@ watch(() => sticks, () => store.sticks = sticks, { deep: true, immediate: true }
 let chosenItem = $ref(null)
 let chosenStick = $ref(null);
 
+function getLabel(key) {
+  switch (key) {
+    case "name":
+      return "Название"
+      break;
+    case "stickId":
+      return "Параметры трубы, мм	"
+      break;
+    case "heightSelf":
+      return "Высота детали, мм	"
+      break;
+    case "count":
+      return "Кол-во деталей"
+      break;
+  }
+}
+
 function calcArea(item) {
   let area = $ref(0)
   let stick = null
@@ -198,6 +215,7 @@ export function useItems() {
     errors,
     sticks,
     getType,
-    chosenStick
+    chosenStick,
+    getLabel
   })
 }
