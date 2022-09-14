@@ -4,8 +4,13 @@ import Navbar from "./components/Nav.vue";
 
 <template>
   <navbar></navbar>
-  <router-view></router-view>
+  <div class="page"><router-view></router-view></div>
 </template>
 
 <style scoped>
+.page {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+}
 </style>

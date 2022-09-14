@@ -3,6 +3,7 @@ import { router } from "../router/router";
 import { useSize } from "../composables/useSize";
 import { useItems } from "../composables/useItems";
 import { computed } from "@vue/runtime-core";
+import { mdiArrowLeft } from "@mdi/js";
 
 let { chosenItem, chosenStick } = $(useItems());
 let { checkSize } = $(useSize());
@@ -19,7 +20,9 @@ function back() {
 </script>
 <template>
   <ul class="mUl" v-if="viewBack">
-    <li class="mLi" @click="back">назад</li>
+    <li class="mLi, iLi" @click="back">
+      <icon style="fill: white" :path="mdiArrowLeft" />
+    </li>
   </ul>
 
   <ul :class="{ mUl: !checkSize, dUl: checkSize }" v-else>
@@ -58,17 +61,19 @@ function back() {
   width: 100%;
   background-color: #0077e6;
   overflow: hidden;
-  position: fixed;
+  position: sticky;
   padding: 0;
 }
 .dUl {
   margin-bottom: 1rem;
   top: 0;
+  flex: 0 0 3rem;
 }
 
 .mUl {
   bottom: 0;
-
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
 }
@@ -89,6 +94,10 @@ function back() {
   border-radius: 0;
   width: 100%;
   text-align: center;
+}
+
+.iLi {
+  padding: 0.75rem;
 }
 
 li:hover {
