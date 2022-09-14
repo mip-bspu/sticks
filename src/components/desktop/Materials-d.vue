@@ -1,6 +1,6 @@
 <script setup>
-import { useItems } from "../composables/useItems";
-import { useId } from "../composables/useId";
+import { useItems } from "../../composables/useItems";
+import { useId } from "../../composables/useId";
 
 let { getId } = $(useId());
 let { sticks } = $(useItems());

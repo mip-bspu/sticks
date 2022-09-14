@@ -7,7 +7,6 @@ import { computed } from "@vue/runtime-core";
 let { chosenItem } = $(useItems());
 let { checkSize } = $(useSize());
 let viewBack = computed(() => {
-  debugger;
   return chosenItem && !checkSize;
 });
 </script>

@@ -1,50 +1,5 @@
-<script setup>
-import { watch } from "vue";
-import { useItems } from "../../composables/useItems";
-
-let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
-  $(useItems());
-
-let eName = $ref(null);
-let eCount = $ref(null);
-let eHeightSelf = $ref(null);
-let eStick = $ref(null);
-let check = $ref(true);
-
-watch(
-  () => [eName, eCount, eHeightSelf, eStick],
-  () => {
-    if (
-      eName === null ||
-      eCount === null ||
-      eHeightSelf === null ||
-      eStick === null
-    ) {
-      return (check = true);
-    } else {
-      return (check = false);
-    }
-  }
-);
-
-function addComponent() {
-  chosenItem.components.push({
-    name: eName,
-    stickId: eStick,
-    heightSelf: eHeightSelf,
-    count: eCount,
-  });
-
-  eName = eCount = eHeightSelf = eStick = null;
-}
-
-function deleteComponent(item) {
-  chosenItem.components.splice(chosenItem.components.indexOf(item), 1);
-}
-</script>
-  
 <template>
-  <div class="card">
+  <div class="card" v-if="chosenItem">
     <h3 style="color: #0077e6">{{ chosenItem?.name }}</h3>
 
     <div class="card-in scrollable">
@@ -126,6 +81,7 @@ function deleteComponent(item) {
                 type="number"
                 name="count"
                 v-model="eCount"
+                @keydown.enter="addComponent(eName, eHeightSelf, eCount)"
               />
             </td>
 
@@ -178,7 +134,50 @@ function deleteComponent(item) {
   </div>
 </template>
 
+<script setup>
+import { watch } from "vue";
+import { useItems } from "../../composables/useItems";
 
+let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
+  $(useItems());
+
+let eName = $ref(null);
+let eCount = $ref(null);
+let eHeightSelf = $ref(null);
+let eStick = $ref(null);
+let check = $ref(true);
+
+watch(
+  () => [eName, eCount, eHeightSelf, eStick],
+  () => {
+    if (
+      eName === null ||
+      eCount === null ||
+      eHeightSelf === null ||
+      eStick === null
+    ) {
+      return (check = true);
+    } else {
+      return (check = false);
+    }
+  }
+);
+
+function addComponent() {
+  chosenItem.components.push({
+    name: eName,
+    stickId: eStick,
+    heightSelf: eHeightSelf,
+    count: eCount,
+  });
+
+  eName = eCount = eHeightSelf = eStick = null;
+}
+
+function deleteComponent(item) {
+  chosenItem.components.splice(chosenItem.components.indexOf(item), 1);
+}
+</script>
 
 <style scoped>
 .nStick {

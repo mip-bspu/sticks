@@ -8,12 +8,10 @@ let { store } = $(useStore())
 let sticks = $ref(store.sticks)
 let arrayItems = $ref(store.arrayItems)
 
-debugger
-
 watch(() => arrayItems, () => store.arrayItems = arrayItems, { deep: true, immediate: true })
 watch(() => sticks, () => store.sticks = sticks, { deep: true, immediate: true })
 
-let chosenItem = $ref(arrayItems[0])
+let chosenItem = $ref(null)
 
 function calcArea(item) {
   let area = $ref(0)

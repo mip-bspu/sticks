@@ -1,7 +1,11 @@
 <script setup>
 import { useItems } from "../../composables/useItems";
 import { useId } from "../../composables/useId";
+import { router } from "../../router/router";
+import { useQuery } from "../../composables/useQuery";
+import { watch } from "@vue/runtime-core";
 
+let { currentStick } = $(useQuery());
 let { getId } = $(useId());
 let { sticks } = $(useItems());
 
@@ -23,9 +27,19 @@ function addStick() {
 function deleteStick(s) {
   sticks.splice(sticks.indexOf(s), 1);
 }
+
+function selectStick(s) {}
+
+watch(
+  router.currentRoute,
+  (route) => {
+    debugger;
+  },
+  { deep: true }
+);
 </script>
   
-  <template>
+<template>
   <div class="card">
     <div class="dropdown">
       <div class="dropbtn"><button>+</button></div>
@@ -45,19 +59,62 @@ function deleteStick(s) {
       </div>
     </div>
 
-    <h3>Параметры хлыстов</h3>
-    <div v-for="item in sticks" :key="item.id" class="card-in">
+    <h3>Добавленные хлысты</h3>
+    <!-- <div v-for="item in sticks" :key="item.id" class="card-in">
       <label><span>Высота, мм</span></label>
       <input type="number" v-model="item.height" class="inputFill number" />
       <label><span>Длина, мм</span></label>
       <input type="number" v-model="item.length" class="inputFill number" />
       <label><span>Ширина, мм</span></label>
       <input type="number" v-model="item.width" class="inputFill number" />
+    </div> -->
+    <div class="card-in">
+      <ul>
+        <li v-for="item in sticks" :key="item.id" @click="selectStick(item)">
+          {{ `${item.length} x ${item.width} x ${item.height}` }}
+          <button
+            style="color: crimson; background-color: unset"
+            @click="deleteStick(item)"
+          >
+            x
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
+
+  <!-- <div class="card">
+    <div class="card-in">
+      <label><span>Высота, мм</span></label>
+      <input
+        type="number"
+        v-model="currentStick.height"
+        class="inputFill number"
+      />
+      <label><span>Длина, мм</span></label>
+      <input
+        type="number"
+        v-model="currentStick.length"
+        class="inputFill number"
+      />
+      <label><span>Ширина, мм</span></label>
+      <input
+        type="number"
+        v-model="currentStick.width"
+        class="inputFill number"
+      />
+    </div>
+  </div> -->
 </template>
   
 <style scoped>
+ul {
+  width: 100%;
+}
+li {
+  display: flex;
+  justify-content: space-between;
+}
 .dropdown {
   position: relative;
   display: inline-block;
