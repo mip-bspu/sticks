@@ -12,5 +12,7 @@ import Navbar from "./components/Nav.vue";
   display: flex;
   flex: 1 1 0;
   min-height: 0;
+  /* overflow: hidden; */
+  overflow-x: hidden;
 }
 </style>

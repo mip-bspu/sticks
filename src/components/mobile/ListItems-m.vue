@@ -13,6 +13,9 @@
             :class="{
               selected: item === chosenItem,
               borderList: i + 1 !== arrayItems.length,
+              liLast: i + 1 == arrayItems.length,
+              liFirst: i == 0,
+              liAlong: arrayItems.length === 1,
             }"
             @click="selectItem(item)"
           >
@@ -48,7 +51,7 @@ let item = $ref({
 
 function addItem() {
   arrayItems.push(JSON.parse(JSON.stringify(item)));
-  chosenItem = arrayItems[arrayItems.length-1]
+  chosenItem = arrayItems[arrayItems.length - 1];
 }
 
 function selectItem(item) {
@@ -80,5 +83,6 @@ h3 {
 } */
 .b-plus:hover {
   background-color: rgb(216, 216, 216);
+  margin-bottom: 1rem;
 }
 </style>

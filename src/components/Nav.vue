@@ -61,13 +61,12 @@ function back() {
   width: 100%;
   background-color: #0077e6;
   overflow: hidden;
-  /* position: sticky; */
+  position: sticky;
   padding: 0;
 }
 .dUl {
-  margin-bottom: 1rem;
   top: 0;
-  flex: 0 0 3rem;
+  flex: 0 0 3.5rem;
 }
 
 .mUl {
@@ -75,6 +74,7 @@ function back() {
   left: 0;
   right: 0;
   width: 100%;
+
   display: flex;
   justify-content: center;
 }
@@ -87,6 +87,7 @@ function back() {
   float: left;
   color: #f6f6f6;
   border-radius: 0;
+  height: 3.5rem;
 }
 
 .mLi {

@@ -41,6 +41,7 @@
                 v-model="item[k]"
                 :type="getType(chosenItem.components[0], k)"
                 :class="{
+                  nameField: k == 'name',
                   number: getType(chosenItem.components[0], k) == 'number',
                   inputFill: true,
                   error: errors[i][k],

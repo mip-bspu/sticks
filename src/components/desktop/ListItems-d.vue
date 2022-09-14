@@ -13,6 +13,9 @@
             :class="{
               selected: item === chosenItem,
               borderList: i + 1 !== arrayItems.length,
+              liLast: i + 1 == arrayItems.length,
+              liFirst: i == 0,
+              liAlong: arrayItems.length === 1,
             }"
             @click="selectItem(item)"
           >
