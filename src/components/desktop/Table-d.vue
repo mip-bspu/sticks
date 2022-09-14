@@ -17,7 +17,8 @@
         <h4>Ширина спила, мм</h4>
         <input
           type="number"
-          class="number"
+          :class="{ number: true, error: errorsSaw }"
+          :title="errorsSaw"
           style="width: 20%"
           v-model="chosenItem.saw"
         />
@@ -152,8 +153,16 @@ import { watch } from "vue";
 import { useItems } from "../../composables/useItems";
 import { mdiClose, mdiPlus } from "@mdi/js";
 
-let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
-  $(useItems());
+let {
+  chosenItem,
+  arrayItems,
+  sPaint,
+  countSticks,
+  errors,
+  sticks,
+  getType,
+  errorsSaw,
+} = $(useItems());
 
 let eName = $ref(null);
 let eCount = $ref(null);
@@ -203,8 +212,10 @@ function deleteComponent(item) {
   border-spacing: 0px;
 }
 
-.error {
-  background-color: crimson;
-  color: white;
+input {
+  width: 90%;
+}
+select {
+  width: 100%;
 }
 </style>
