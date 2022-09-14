@@ -26,7 +26,7 @@
       </ul>
     </div>
 
-    <button class="b-plus" @click="addItem">
+    <button class="b-plus" @click="addItem()">
       <icon class="i-plus" :path="mdiPlus" />
     </button>
   </div>
@@ -48,6 +48,7 @@ let item = $ref({
 
 function addItem() {
   arrayItems.push(JSON.parse(JSON.stringify(item)));
+  chosenItem = arrayItems[arrayItems.length-1]
 }
 
 function selectItem(item) {

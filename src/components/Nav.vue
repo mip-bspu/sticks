@@ -20,7 +20,7 @@ function back() {
 </script>
 <template>
   <ul class="mUl" v-if="viewBack">
-    <li class="mLi, iLi" @click="back">
+    <li class="mLi iLi" @click="back">
       <icon style="fill: white" :path="mdiArrowLeft" />
     </li>
   </ul>
@@ -61,7 +61,7 @@ function back() {
   width: 100%;
   background-color: #0077e6;
   overflow: hidden;
-  position: sticky;
+  /* position: sticky; */
   padding: 0;
 }
 .dUl {
@@ -74,6 +74,7 @@ function back() {
   bottom: 0;
   left: 0;
   right: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
