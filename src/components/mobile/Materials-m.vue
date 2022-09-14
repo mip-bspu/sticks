@@ -2,13 +2,14 @@
 import { useItems } from "../../composables/useItems";
 import { useId } from "../../composables/useId";
 import { mdiClose, mdiPlus } from "@mdi/js";
+import MaterialForm from "./Material-form-m.vue";
 
 let { getId } = $(useId());
 let { sticks, chosenStick } = $(useItems());
 
-let eHeight = $ref(null);
-let eLength = $ref(null);
-let eWidth = $ref(null);
+let eHeight = $ref(0);
+let eLength = $ref(0);
+let eWidth = $ref(0);
 
 function addStick() {
   sticks.push({
@@ -18,7 +19,8 @@ function addStick() {
     width: eWidth,
   });
 
-  eHeight = eLength = eWidth = null;
+  eHeight = eLength = eWidth = 0;
+  chosenStick = sticks[sticks.length - 1];
 }
 
 function deleteStick(s) {
@@ -39,7 +41,7 @@ function selectStick(s) {
           <li
             @click="selectStick(item)"
             :class="{
-              selected: item === chosenItem,
+              selected: item === chosenStick,
               borderList: i + 1 !== sticks.length,
             }"
           >
@@ -52,34 +54,12 @@ function selectStick(s) {
       </ul>
     </div>
 
-    <button class="b-plus" @click="addItem">
+    <button class="b-plus" @click="addStick()">
       <icon class="i-plus" :path="mdiPlus" />
     </button>
   </div>
 
-  <div class="card" v-else>
-    <h3>Параметры трубы</h3>
-    <div class="card-in">
-      <label><span>Высота, мм</span></label>
-      <input
-        type="number"
-        v-model="chosenStick.height"
-        class="inputFill number"
-      />
-      <label><span>Длина, мм</span></label>
-      <input
-        type="number"
-        v-model="chosenStick.length"
-        class="inputFill number"
-      />
-      <label><span>Ширина, мм</span></label>
-      <input
-        type="number"
-        v-model="chosenStick.width"
-        class="inputFill number"
-      />
-    </div>
-  </div>
+  <material-form v-else />
 </template>
   
 <style scoped>
