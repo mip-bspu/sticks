@@ -4,15 +4,22 @@ import { useSize } from "../composables/useSize";
 import { useItems } from "../composables/useItems";
 import { computed } from "@vue/runtime-core";
 
-let { chosenItem } = $(useItems());
+let { chosenItem, chosenStick } = $(useItems());
 let { checkSize } = $(useSize());
 let viewBack = computed(() => {
-  return chosenItem && !checkSize;
+  if (router.currentRoute.value.name === "Изделия")
+    return chosenItem && !checkSize;
+  else return chosenStick && !checkSize;
 });
+
+function back() {
+  chosenItem = null;
+  chosenStick = null;
+}
 </script>
 <template>
   <ul class="mUl" v-if="viewBack">
-    <li class="mLi" @click="chosenItem = null">назад</li>
+    <li class="mLi" @click="back">назад</li>
   </ul>
 
   <ul :class="{ mUl: !checkSize, dUl: checkSize }" v-else>

@@ -4,6 +4,16 @@
 
     <div class="card-in scrollable">
       <div>
+        <h4>Название изделия</h4>
+        <input
+          type="text"
+          style="width: 20%"
+          placeholder="Введите название..."
+          v-model="chosenItem.name"
+        />
+      </div>
+
+      <div>
         <h4>Ширина спила, мм</h4>
         <input
           type="number"
@@ -45,8 +55,8 @@
               </select>
             </td>
             <td>
-              <button @click="deleteComponent(item)" style="color: crimson">
-                x
+              <button @click="deleteComponent(item)">
+                <icon class="i-close" :path="mdiClose" />
               </button>
             </td>
           </tr>
@@ -86,7 +96,9 @@
             </td>
 
             <td>
-              <button :disabled="check" @click="addComponent()">+</button>
+              <button class="b-plus" :disabled="check" @click="addComponent()">
+                <icon class="i-plus" :path="mdiPlus" />
+              </button>
             </td>
           </tr>
         </tbody>
@@ -137,6 +149,7 @@
 <script setup>
 import { watch } from "vue";
 import { useItems } from "../../composables/useItems";
+import { mdiClose, mdiPlus } from "@mdi/js";
 
 let { chosenItem, arrayItems, sPaint, countSticks, errors, sticks, getType } =
   $(useItems());

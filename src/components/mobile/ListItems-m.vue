@@ -1,56 +1,53 @@
 <template>
-  <div class="card" v-if="chosenItem === null">
-    <h3>ИЗДЕЛИЯ</h3>
+  <div class="card" v-if="chosenItem == null">
+    <h3>Изделия</h3>
 
     <div class="card-in">
       <ul>
-        <li
-          v-for="item in arrayItems"
+        <div
+          v-for="(item, i) in arrayItems"
           :key="item.name"
-          :class="{ selected: item === chosenItem }"
-          @click="selectItem(item)"
+          class="item-list-m"
         >
-          {{ item.name }}
-          <button
-            style="color: crimson; background-color: unset"
-            @click="deleteItem(item)"
+          <li
+            :class="{
+              selected: item === chosenItem,
+              borderList: i + 1 !== arrayItems.length,
+            }"
+            @click="selectItem(item)"
           >
-            x
+            {{ item.name }}
+          </li>
+
+          <button @click="deleteItem(item)">
+            <icon class="i-close" :path="mdiClose" />
           </button>
-        </li>
+        </div>
       </ul>
     </div>
-    <div class="setName">
-      <input
-        type="text"
-        v-model="item.name"
-        @keydown.enter="addItem"
-        placeholder="Введите название..."
-        autofocus
-      />
-      <button :disabled="!item.name" @click="addItem">+</button>
-    </div>
-    <icon :path="mdiClose"></icon>
+
+    <button class="b-plus" @click="addItem">
+      <icon class="i-plus" :path="mdiPlus" />
+    </button>
   </div>
 
-  <!-- <table-m v-else /> -->
+  <table-m v-else />
 </template>
 <script setup>
-import { mdiClose } from "@mdi/js";
-import { useItems } from "../../composables/useItems";
+import { mdiClose, mdiPlus } from "@mdi/js";
 import TableM from "./Table-m.vue";
+import { useItems } from "../../composables/useItems";
 
 let { chosenItem, arrayItems } = $(useItems());
 
 let item = $ref({
-  name: "",
+  name: "Новое изделие",
   saw: 0,
   components: [],
 });
 
 function addItem() {
   arrayItems.push(JSON.parse(JSON.stringify(item)));
-  item.name = "";
 }
 
 function selectItem(item) {
@@ -58,23 +55,29 @@ function selectItem(item) {
 }
 
 function deleteItem(item) {
+  if (chosenItem === item) chosenItem = null;
   arrayItems.splice(arrayItems.indexOf(item), 1);
-  console.log(arrayItems);
 }
 </script>
   
 <style scoped>
 .card-in {
   align-items: center;
+  padding: 0;
 }
 ul {
   width: 100%;
 }
 li {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
 }
 h3 {
   margin-top: 0;
+}
+/* button:hover {
+  background-color: rgb(216, 216, 216);
+} */
+.b-plus:hover {
+  background-color: rgb(216, 216, 216);
 }
 </style>

@@ -1,55 +1,50 @@
 <template>
   <div class="card" style="flex: 0 1 20%">
-    <h3>
-      <span>ИЗДЕЛИЯ</span>
-    </h3>
+    <h3>Изделия</h3>
 
     <div class="card-in">
       <ul>
-        <li
-          v-for="item in arrayItems"
+        <div
+          v-for="(item, i) in arrayItems"
           :key="item.name"
-          :class="{ selected: item === chosenItem, viewBtn: true }"
-          @click="selectItem(item)"
+          class="item-list-m"
         >
-          {{ item.name }}
-          <button
-            style="color: crimson; background-color: unset"
-            @click="deleteItem(item)"
+          <li
+            :class="{
+              selected: item === chosenItem,
+              borderList: i + 1 !== arrayItems.length,
+            }"
+            @click="selectItem(item)"
           >
-            x
+            {{ item.name }}
+          </li>
+          <button @click="deleteItem(item)">
+            <icon class="i-close" :path="mdiClose" />
           </button>
-        </li>
+        </div>
       </ul>
     </div>
 
-    <div class="setName">
-      <input
-        type="text"
-        v-model="item.name"
-        @keydown.enter="addItem"
-        placeholder="Введите название..."
-        autofocus
-      />
-      <button :disabled="!item.name" @click="addItem">+</button>
-    </div>
+    <button class="b-plus" @click="addItem">
+      <icon class="i-plus" :path="mdiPlus" />
+    </button>
   </div>
 </template>
 
 <script setup>
 import { useItems } from "../../composables/useItems";
+import { mdiClose, mdiPlus } from "@mdi/js";
 
 let { chosenItem, arrayItems } = $(useItems());
 
 let item = $ref({
-  name: "",
+  name: "Новое изделие",
   saw: 0,
   components: [],
 });
 
 function addItem() {
   arrayItems.push(JSON.parse(JSON.stringify(item)));
-  item.name = "";
 }
 
 function selectItem(item) {
@@ -57,14 +52,19 @@ function selectItem(item) {
 }
 
 function deleteItem(item) {
+  if (chosenItem === item) chosenItem = null;
   arrayItems.splice(arrayItems.indexOf(item), 1);
-  console.log(arrayItems);
 }
 </script>
 
 <style scoped>
+ul {
+  width: 100%;
+}
 li {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
+}
+.card-in {
+  padding: 0;
 }
 </style>

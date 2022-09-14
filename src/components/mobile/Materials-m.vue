@@ -1,13 +1,10 @@
 <script setup>
 import { useItems } from "../../composables/useItems";
 import { useId } from "../../composables/useId";
-import { router } from "../../router/router";
-import { useQuery } from "../../composables/useQuery";
-import { watch } from "@vue/runtime-core";
+import { mdiClose, mdiPlus } from "@mdi/js";
 
-let { currentStick } = $(useQuery());
 let { getId } = $(useId());
-let { sticks } = $(useItems());
+let { sticks, chosenStick } = $(useItems());
 
 let eHeight = $ref(null);
 let eLength = $ref(null);
@@ -28,83 +25,61 @@ function deleteStick(s) {
   sticks.splice(sticks.indexOf(s), 1);
 }
 
-function selectStick(s) {}
-
-watch(
-  router.currentRoute,
-  (route) => {
-    debugger;
-  },
-  { deep: true }
-);
+function selectStick(s) {
+  chosenStick = s;
+}
 </script>
   
 <template>
-  <div class="card">
-    <div class="dropdown">
-      <div class="dropbtn"><button>+</button></div>
-      <div class="dropdown-content">
-        <div class="newStick">
-          <label><span>Высота, мм</span></label>
-          <input type="number" v-model="eHeight" class="number" />
-          <label><span>Длина, мм</span></label>
-          <input type="number" v-model="eLength" class="number" />
-          <label><span>Ширина, мм</span></label>
-          <input type="number" v-model="eWidth" class="number" />
-
-          <div class="addBtn">
-            <button @click="addStick()">Добавить</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h3>Добавленные хлысты</h3>
-    <!-- <div v-for="item in sticks" :key="item.id" class="card-in">
-      <label><span>Высота, мм</span></label>
-      <input type="number" v-model="item.height" class="inputFill number" />
-      <label><span>Длина, мм</span></label>
-      <input type="number" v-model="item.length" class="inputFill number" />
-      <label><span>Ширина, мм</span></label>
-      <input type="number" v-model="item.width" class="inputFill number" />
-    </div> -->
+  <div class="card" v-if="chosenStick === null">
+    <h3>Добавленные трубы</h3>
     <div class="card-in">
       <ul>
-        <li v-for="item in sticks" :key="item.id" @click="selectStick(item)">
-          {{ `${item.length} x ${item.width} x ${item.height}` }}
-          <button
-            style="color: crimson; background-color: unset"
-            @click="deleteStick(item)"
+        <div v-for="(item, i) in sticks" :key="item.id" class="item-list-m">
+          <li
+            @click="selectStick(item)"
+            :class="{
+              selected: item === chosenItem,
+              borderList: i + 1 !== sticks.length,
+            }"
           >
-            x
+            {{ `${item.length} x ${item.width} x ${item.height}` }}
+          </li>
+          <button style="background-color: unset" @click="deleteStick(item)">
+            <icon style="fill: crimson" :path="mdiClose" />
           </button>
-        </li>
+        </div>
       </ul>
     </div>
+
+    <button class="b-plus" @click="addItem">
+      <icon class="i-plus" :path="mdiPlus" />
+    </button>
   </div>
 
-  <!-- <div class="card">
+  <div class="card" v-else>
+    <h3>Параметры трубы</h3>
     <div class="card-in">
       <label><span>Высота, мм</span></label>
       <input
         type="number"
-        v-model="currentStick.height"
+        v-model="chosenStick.height"
         class="inputFill number"
       />
       <label><span>Длина, мм</span></label>
       <input
         type="number"
-        v-model="currentStick.length"
+        v-model="chosenStick.length"
         class="inputFill number"
       />
       <label><span>Ширина, мм</span></label>
       <input
         type="number"
-        v-model="currentStick.width"
+        v-model="chosenStick.width"
         class="inputFill number"
       />
     </div>
-  </div> -->
+  </div>
 </template>
   
 <style scoped>
@@ -112,8 +87,7 @@ ul {
   width: 100%;
 }
 li {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
 }
 .dropdown {
   position: relative;
@@ -151,8 +125,8 @@ h3 {
   width: 10%;
 }
 .card-in {
-  align-items: flex-end;
-  gap: 0.5rem;
+  align-items: center;
+  padding: 0;
 }
 .newStick {
   display: flex;
