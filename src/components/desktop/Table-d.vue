@@ -170,21 +170,16 @@ let {
   errorsSaw,
 } = $(useItems());
 
-let eName = $ref(null);
-let eCount = $ref(null);
-let eHeightSelf = $ref(null);
-let eStick = $ref(null);
+let eName = $ref("");
+let eCount = $ref("");
+let eHeightSelf = $ref("");
+let eStick = $ref("");
 let check = $ref(true);
 
 watch(
   () => [eName, eCount, eHeightSelf, eStick],
   () => {
-    if (
-      eName === null ||
-      eCount === null ||
-      eHeightSelf === null ||
-      eStick === null
-    ) {
+    if (eName === "" || eCount === "" || eHeightSelf === "" || eStick === "") {
       return (check = true);
     } else {
       return (check = false);
@@ -200,7 +195,7 @@ function addComponent() {
     count: eCount,
   });
 
-  eName = eCount = eHeightSelf = eStick = null;
+  eName = eCount = eHeightSelf = eStick = "";
 }
 
 function deleteComponent(item) {

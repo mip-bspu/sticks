@@ -2,13 +2,27 @@
 import { useItems } from "../../composables/useItems";
 import { useId } from "../../composables/useId";
 import { mdiClose, mdiPlus } from "@mdi/js";
+import { watch } from "vue";
 
 let { getId } = $(useId());
 let { sticks, useStick, errorsMaterial } = $(useItems());
 
-let eHeight = $ref(null);
-let eLength = $ref(null);
-let eWidth = $ref(null);
+let eHeight = $ref("");
+let eLength = $ref("");
+let eWidth = $ref("");
+
+let check = $ref(true);
+
+watch(
+  () => [eHeight, eLength, eWidth],
+  () => {
+    if (eHeight === "" || eLength === "" || eWidth === "") {
+      return (check = true);
+    } else {
+      return (check = false);
+    }
+  }
+);
 
 function addStick() {
   sticks.push({
@@ -123,7 +137,7 @@ function deleteStick(s) {
               />
             </td>
             <td>
-              <button class="b-plus" @click="addStick()">
+              <button :disabled="check" class="b-plus" @click="addStick()">
                 <icon class="i-plus" :path="mdiPlus" />
               </button>
             </td>

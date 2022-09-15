@@ -130,11 +130,17 @@ button:active {
 }
 
 button:disabled,
-button:active:disabled {
+button:active:disabled,
+.b-plus:disabled,
+.b-plus:hover:disabled {
   background-color: rgb(233, 233, 233);
   color: rgb(73, 73, 73);
   transform: scale(1);
   cursor: alias;
+}
+
+.b-plus:disabled .i-plus {
+  fill: gray
 }
 
 input:focus {
