@@ -115,6 +115,7 @@ function deleteStick(s) {
                 v-model="eHeight"
                 class="number"
                 placeholder="Высота"
+                autofocus
               />
             </td>
             <td>
@@ -131,6 +132,7 @@ function deleteStick(s) {
                 v-model="eWidth"
                 class="number"
                 placeholder="Ширина"
+                @keydown.enter="addStick()"
               />
             </td>
             <td>
