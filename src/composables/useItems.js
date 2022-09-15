@@ -18,16 +18,12 @@ function getLabel(key) {
   switch (key) {
     case "name":
       return "Название"
-      break;
     case "stickId":
       return "Параметры трубы, мм	"
-      break;
     case "heightSelf":
       return "Высота детали, мм	"
-      break;
     case "count":
       return "Кол-во деталей"
-      break;
   }
 }
 
@@ -167,35 +163,13 @@ function getType(c, el) {
   }
 }
 
-function checkNumber(num, height) {
-  switch (num) {
-    case num < 0: {
-      console.log("Параметр не может быть меньше 0");
-      return "Параметр не может быть меньше 0"
-    };
-    // case num < height: {
-    //   return ""
-    // }
-    case num === null: {
-      console.log("Заполните поле");
-      return "Заполните поле"
-    }
-  }
-}
-
-function checkName(name) {
-  if (chosenItem.components.filter((c) => c.name === name).length > 1) {
-    return "Деталь с таким названием уже существует"
-  }
-}
-
 function getStick(component) {
   return sticks.find(s => s.id === component.stickId)
 }
 
 let sPaint = computed(() => calcArea(chosenItem))
 let countSticks = computed(() => binPacking(chosenItem))
-let errors = computed(() => {
+let errorsDetail = computed(() => {
   return chosenItem.components.reduce((acc, component, i) => {
     acc[i] = {};
 
@@ -218,6 +192,28 @@ let errors = computed(() => {
     return acc
   }, {})
 });
+let errorsSaw = computed(() => {
+  if (chosenItem.saw < 0) {
+    return 'Спил не может быть отрицательным'
+  }
+});
+let errorsMaterial = computed(() => {
+  return sticks.reduce((acc, s, i) => {
+    acc[i] = {};
+
+    if (s.height < 0) {
+      acc[i].height = "Высота не может быть отрицательной"
+    }
+    if (s.length < 0) {
+      acc[i].length = "Длина не может быть отрицательной"
+    }
+    if (s.width < 0) {
+      acc[i].width = "Ширина не может быть отрицательной"
+    }
+
+    return acc
+  }, {});
+})
 
 export function useItems() {
   return $$({
@@ -225,11 +221,13 @@ export function useItems() {
     arrayItems,
     chosenItem,
     countSticks,
-    errors,
+    errors: errorsDetail,
     sticks,
     getType,
     chosenStick,
     getLabel,
-    useStick
+    useStick,
+    errorsSaw,
+    errorsMaterial
   })
 }

@@ -17,7 +17,7 @@
         <h4>Ширина спила, мм</h4>
         <input
           type="number"
-          :class="{ number: true, error: errorsSaw }"
+          :class="{ number: true, error: errorsSaw || chosenItem.saw === '' }"
           :title="errorsSaw"
           style="width: 20%"
           v-model="chosenItem.saw"
@@ -28,7 +28,7 @@
         <thead>
           <tr>
             <th style="text-align: left">Название</th>
-            <th style="text-align: right">Параметры хлыста, мм</th>
+            <th style="text-align: right">Параметры трубы, мм</th>
             <th style="text-align: right">Высота детали, мм</th>
             <th style="text-align: right">Кол-во деталей</th>
             <th></th>
@@ -42,10 +42,10 @@
                 v-model="item[k]"
                 :type="getType(chosenItem.components[0], k)"
                 :class="{
-                  nameField: k == 'name',
+                  nameField: k == 'name' && !errors[i][k],
                   number: getType(chosenItem.components[0], k) == 'number',
-                  inputFill: true,
-                  error: errors[i][k],
+                  inputFill: !errors[i][k] && item[k] !== '',
+                  error: errors[i][k] || item[k] === '',
                 }"
                 :title="errors[i][k]"
               />
@@ -74,6 +74,7 @@
             </td>
             <td>
               <select v-model="eStick">
+                <option value="" disabled selected>Выберите трубу</option>
                 <option v-for="s in sticks" :key="s.id" :value="s.id">
                   {{ s.length + "x" + s.width + "x" + s.height }}
                 </option>
@@ -85,6 +86,7 @@
                 type="number"
                 name="height"
                 v-model="eHeightSelf"
+                placeholder="Длина"
               />
             </td>
             <td>
@@ -94,6 +96,7 @@
                 name="count"
                 v-model="eCount"
                 @keydown.enter="addComponent(eName, eHeightSelf, eCount)"
+                placeholder="Кол-во"
               />
             </td>
 
@@ -107,13 +110,16 @@
       </table>
 
       <hr />
+      <!-- <h3 style="color: crimson" v-if="errors || errorsSaw">
+        Вычисления содержат ошибки, проверьте данные!
+      </h3> -->
       <h3 style="color: #0077e6">
-        Общая площадь окраски: {{ sPaint }} м <sub>2</sub>
+        Общая площадь окраски: {{ sPaint }} м <sup>2</sup>
       </h3>
 
       <div v-for="s in countSticks" :key="s.stickObj.id">
         <h3 style="color: #0077e6">
-          Хлыст
+          Труба
           {{
             s.stickObj.length + "x" + s.stickObj.width + "x" + s.stickObj.height
           }}
@@ -213,8 +219,9 @@ function deleteComponent(item) {
 }
 
 input {
-  width: 90%;
+  width: 80%;
 }
+
 select {
   width: 100%;
 }

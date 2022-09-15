@@ -12,6 +12,8 @@ let {
   sticks,
   getType,
   getLabel,
+  errorsSaw,
+  errorsMaterial,
 } = $(useItems());
 
 function addComponent() {
@@ -40,7 +42,11 @@ function deleteComponent(item) {
         v-model="chosenItem.name"
       />
       <h4>Ширина спила, мм</h4>
-      <input type="number" class="number" v-model="chosenItem.saw" />
+      <input
+        type="number"
+        :class="{ number: true, error: errorsSaw || chosenItem === '' }"
+        v-model="chosenItem.saw"
+      />
     </div>
 
     <h4>Детали</h4>
@@ -52,20 +58,26 @@ function deleteComponent(item) {
         <input
           v-if="k != 'stickId'"
           v-model="item[k]"
-          :type="getType(chosenItem.components[0], k)"
+          :type="getType(chosenItem.components[i], k)"
           :class="{
             nameField: k == 'name',
-            number: getType(chosenItem.components[0], k) == 'number',
-            error: errors[i][k],
+            number: getType(chosenItem.components[i], k) == 'number',
+            error: errors[i][k] || item[k] === '',
           }"
-          :title="errors[i][k]"
         />
-
-        <select v-else v-model="item.stickId" class="number">
+        <select
+          v-else
+          v-model="item.stickId"
+          :class="{
+            number: true,
+          }"
+        >
+          <option value="" disabled selected>Выберите трубу</option>
           <option v-for="s in sticks" :key="s.id" :value="s.id">
             {{ s.length + "x" + s.width + "x" + s.height }}
           </option>
         </select>
+        <label class="labelWarn" v-if="errors[i][k]">{{ errors[i][k] }}</label>
       </div>
       <button @click="deleteComponent(item)">
         <icon class="i-close" :path="mdiClose" />
@@ -143,5 +155,9 @@ function deleteComponent(item) {
 
 h4 {
   margin: 0.5rem 0;
+}
+.i-close {
+  background-color: rgba(255, 227, 227, 0.532);
+  border-radius: 0.5rem;
 }
 </style>

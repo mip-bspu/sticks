@@ -4,7 +4,7 @@ import { useId } from "../../composables/useId";
 import { mdiClose, mdiPlus } from "@mdi/js";
 
 let { getId } = $(useId());
-let { sticks, useStick } = $(useItems());
+let { sticks, useStick, errorsMaterial } = $(useItems());
 
 let eHeight = $ref(null);
 let eLength = $ref(null);
@@ -28,7 +28,7 @@ function deleteStick(s) {
 
 <template>
   <div class="card">
-    <h3>Параметры хлыстов</h3>
+    <h3>Параметры профильных труб</h3>
     <div class="card-in">
       <table>
         <thead>
@@ -45,21 +45,39 @@ function deleteStick(s) {
               <input
                 type="number"
                 v-model="item.height"
-                class="inputFill number"
+                :class="{
+                  number: true,
+                  inputFill:
+                    !errorsMaterial[item.id].height && item.height !== '',
+                  error: errorsMaterial[item.id].height || item.height === '',
+                }"
+                :title="errorsMaterial[item.id].height"
               />
             </td>
             <td>
               <input
                 type="number"
                 v-model="item.length"
-                class="inputFill number"
+                :class="{
+                  number: true,
+                  inputFill:
+                    !errorsMaterial[item.id].length && item.length !== '',
+                  error: errorsMaterial[item.id].length || item.length === '',
+                }"
+                :title="errorsMaterial[item.id].length"
               />
             </td>
             <td>
               <input
                 type="number"
                 v-model="item.width"
-                class="inputFill number"
+                :class="{
+                  number: true,
+                  inputFill:
+                    !errorsMaterial[item.id].width && item.width !== '',
+                  error: errorsMaterial[item.id].width || item.width === '',
+                }"
+                :title="errorsMaterial[item.id].width"
               />
             </td>
 
@@ -74,18 +92,36 @@ function deleteStick(s) {
             </td>
 
             <td v-else>
-              <button
-                style="background-color: unset"
-                @click="deleteStick(item)"
-              >
-                <icon style="fill: crimson" :path="mdiClose" />
+              <button @click="deleteStick(item)">
+                <icon class="i-close" :path="mdiClose" />
               </button>
             </td>
           </tr>
           <tr class="newRow">
-            <td><input type="number" v-model="eHeight" class="number" /></td>
-            <td><input type="number" v-model="eLength" class="number" /></td>
-            <td><input type="number" v-model="eWidth" class="number" /></td>
+            <td>
+              <input
+                type="number"
+                v-model="eHeight"
+                class="number"
+                placeholder="Высота"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                v-model="eLength"
+                class="number"
+                placeholder="Длина"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                v-model="eWidth"
+                class="number"
+                placeholder="Ширина"
+              />
+            </td>
             <td>
               <button class="b-plus" @click="addStick()">
                 <icon class="i-plus" :path="mdiPlus" />
@@ -101,5 +137,8 @@ function deleteStick(s) {
 <style scoped>
 th {
   text-align: right;
+}
+input {
+  width: 90%;
 }
 </style>

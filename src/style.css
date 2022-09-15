@@ -80,6 +80,8 @@ select {
 }
 
 select {
+  -webkit-appearance: none;
+  -webkit-appearance: menulist-button;
   height: 2.5rem;
 }
 
@@ -142,6 +144,16 @@ input:focus {
 select:hover,
 input:hover {
   background-color: rgb(184, 184, 184);
+}
+
+.error {
+  background-color: crimson;
+  color: white;
+}
+
+.error:hover {
+  background-color: rgb(132, 14, 37);
+  color: white;
 }
 
 .item-list-m {
@@ -273,4 +285,9 @@ label>span {
   font-size: .8rem;
   letter-spacing: 0.1rem;
   color: rgb(153, 153, 153);
+}
+
+.labelWarn {
+  color: crimson;
+  font-size: .8rem;
 }

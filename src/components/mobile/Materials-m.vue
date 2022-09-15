@@ -47,17 +47,13 @@ function selectStick(s) {
           >
             {{ `${item.length} x ${item.width} x ${item.height}` }}
           </li>
-          <button
-            v-if="!useStick(item.id)"
-            style="background-color: unset"
-            @click="deleteStick(item)"
-          >
-            <icon style="fill: crimson" :path="mdiClose" />
+          <button v-if="!useStick(item.id)" @click="deleteStick(item)">
+            <icon class="i-close" :path="mdiClose" />
           </button>
           <button
             v-else
-            style="background-color: unset"
             title="деталь используется"
+            style="background-color: unset"
             disabled
           >
             <icon style="fill: lightgrey" :path="mdiClose" />
