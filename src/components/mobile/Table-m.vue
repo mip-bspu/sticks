@@ -65,13 +65,7 @@ function deleteComponent(item) {
             error: errors[i][k] || item[k] === '',
           }"
         />
-        <select
-          v-else
-          v-model="item.stickId"
-          :class="{
-            number: true,
-          }"
-        >
+        <select v-else v-model="item.stickId" class="number">
           <option value="" disabled selected>Выберите трубу</option>
           <option v-for="s in sticks" :key="s.id" :value="s.id">
             {{ s.length + "x" + s.width + "x" + s.height }}
@@ -95,7 +89,7 @@ function deleteComponent(item) {
       </div>
       <div v-for="s in countSticks" :key="s.stickObj.id">
         <h3 style="color: #0077e6">
-          Хлыст
+          Труба
           {{
             s.stickObj.length + "x" + s.stickObj.width + "x" + s.stickObj.height
           }}

@@ -73,8 +73,8 @@
               />
             </td>
             <td>
-              <select v-model="eStick">
-                <option value="" disabled selected>Выберите трубу</option>
+              <select class="number" v-model="eStick">
+                <option value="" disabled selected>ВЫБЕРИТЕ ТРУБУ</option>
                 <option v-for="s in sticks" :key="s.id" :value="s.id">
                   {{ s.length + "x" + s.width + "x" + s.height }}
                 </option>
@@ -185,6 +185,11 @@ watch(
       return (check = false);
     }
   }
+);
+
+watch(
+  () => chosenItem,
+  () => (eName = eCount = eHeightSelf = eStick = "")
 );
 
 function addComponent() {
