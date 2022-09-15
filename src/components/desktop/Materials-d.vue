@@ -54,18 +54,17 @@ function deleteStick(s) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in sticks" :key="item.id">
+          <tr v-for="(item, i) in sticks" :key="i">
             <td>
               <input
                 type="number"
                 v-model="item.height"
                 :class="{
                   number: true,
-                  inputFill:
-                    !errorsMaterial[item.id].height && item.height !== '',
-                  error: errorsMaterial[item.id].height || item.height === '',
+                  inputFill: !errorsMaterial[i].height && item.height !== '',
+                  error: errorsMaterial[i].height || item.height === '',
                 }"
-                :title="errorsMaterial[item.id].height"
+                :title="errorsMaterial[i].height"
               />
             </td>
             <td>
@@ -74,11 +73,10 @@ function deleteStick(s) {
                 v-model="item.length"
                 :class="{
                   number: true,
-                  inputFill:
-                    !errorsMaterial[item.id].length && item.length !== '',
-                  error: errorsMaterial[item.id].length || item.length === '',
+                  inputFill: !errorsMaterial[i].length && item.length !== '',
+                  error: errorsMaterial[i].length || item.length === '',
                 }"
-                :title="errorsMaterial[item.id].length"
+                :title="errorsMaterial[i].length"
               />
             </td>
             <td>
@@ -87,11 +85,10 @@ function deleteStick(s) {
                 v-model="item.width"
                 :class="{
                   number: true,
-                  inputFill:
-                    !errorsMaterial[item.id].width && item.width !== '',
-                  error: errorsMaterial[item.id].width || item.width === '',
+                  inputFill: !errorsMaterial[i].width && item.width !== '',
+                  error: errorsMaterial[i].width || item.width === '',
                 }"
-                :title="errorsMaterial[item.id].width"
+                :title="errorsMaterial[i].width"
               />
             </td>
 
