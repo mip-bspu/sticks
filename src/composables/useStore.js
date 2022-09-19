@@ -4,7 +4,7 @@ let { getId } = $(useId())
 
 let key = "sticks";
 
-let defaultV = $ref({ arrayItems: [], sticks: [] })
+let defaultV = $ref({ arrayItems: [], sticks: [], stickId: 0 })
 let store = $ref(JSON.parse(localStorage.getItem(key) || JSON.stringify(defaultV)))
 
 watch(() => store, save, { deep: true, immediate: true })

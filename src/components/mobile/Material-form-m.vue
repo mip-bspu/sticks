@@ -1,6 +1,10 @@
 <script setup>
 import { useItems } from "../../composables/useItems";
 let { sticks, chosenStick, errorsMaterial } = $(useItems());
+
+function findIndex() {
+  return sticks.indexOf(chosenStick);
+}
 </script>
 <template>
   <div class="card">
@@ -13,11 +17,11 @@ let { sticks, chosenStick, errorsMaterial } = $(useItems());
         :class="{
           number: true,
           error:
-            errorsMaterial[chosenStick.id].height || chosenStick.height === '',
+            errorsMaterial[findIndex()].height || chosenStick.height === '',
         }"
       />
-      <label class="labelWarn" v-if="errorsMaterial[chosenStick.id].height">
-        {{ errorsMaterial[chosenStick.id].height }}
+      <label class="labelWarn" v-if="errorsMaterial[findIndex()].height">
+        {{ errorsMaterial[findIndex()].height }}
       </label>
       <label><span>Длина, мм</span></label>
       <input
@@ -26,11 +30,11 @@ let { sticks, chosenStick, errorsMaterial } = $(useItems());
         :class="{
           number: true,
           error:
-            errorsMaterial[chosenStick.id].length || chosenStick.length === '',
+            errorsMaterial[findIndex()].length || chosenStick.length === '',
         }"
       />
-      <label class="labelWarn" v-if="errorsMaterial[chosenStick.id].length">
-        {{ errorsMaterial[chosenStick.id].length }}
+      <label class="labelWarn" v-if="errorsMaterial[findIndex()].length">
+        {{ errorsMaterial[findIndex()].length }}
       </label>
       <label><span>Ширина, мм</span></label>
       <input
@@ -38,12 +42,11 @@ let { sticks, chosenStick, errorsMaterial } = $(useItems());
         v-model="chosenStick.width"
         :class="{
           number: true,
-          error:
-            errorsMaterial[chosenStick.id].width || chosenStick.width === '',
+          error: errorsMaterial[findIndex()].width || chosenStick.width === '',
         }"
       />
-      <label class="labelWarn" v-if="errorsMaterial[chosenStick.id].width">
-        {{ errorsMaterial[chosenStick.id].width }}
+      <label class="labelWarn" v-if="errorsMaterial[findIndex()].width">
+        {{ errorsMaterial[findIndex()].width }}
       </label>
     </div>
   </div>
