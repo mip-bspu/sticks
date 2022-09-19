@@ -1,7 +1,19 @@
-# Vue 3 + Vite
+#   STICKS
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Application for calculating the number of sticks for your products.
 
-## Recommended IDE Setup
+### Installation
+```bash
+npm install
+```
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+### Start
+```bash
+npm run dev
+```
+### Build
+```bash
+npm run build
+```
+
+![Image alt](https://github.com/pyureshka/sticks/blob/master/static/screen.PNG)
